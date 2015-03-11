@@ -10,88 +10,88 @@
 </head>
 <body>
 	<div class="barloader">
- 		<div class="green"></div>
-  		<div class="red"></div>
-  		<div class="blue"></div>
-  		<div class="yellow"></div>
+		<div class="green"></div>
+		<div class="red"></div>
+		<div class="blue"></div>
+		<div class="yellow"></div>
 	</div>
 	<div class="container">
 		<hr/>
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="well well2">
-				<div id="form_content">
-					<h1>Make your <b>mark</b>er.</h1>
-					<hr/>
-					{{ Form::open(array('id' => 'create')) }}
-					<h3>Personal Identification.</h3>
-					<a href="#" id="hide_ident">I already did this, I want to edit my entry &raquo;</a>
-					<a href="#" id="show_ident" style="display:none;">Oops, go back! &raquo;</a>
-					<hr/>
-					<div class="row">
-						<div class="col-xs-6" id="fname-container">
-							<div class="form-group">
-								{{Form::label('fname', 'First Name')}}
-								{{Form::text('fname', null, array('class' => 'form-control', 'placeholder' => 'First Name'))}}
+					<div id="form_content">
+						<h1>Make your <b>mark</b>er.</h1>
+						<hr/>
+						{{ Form::open(array('id' => 'create')) }}
+						<h3>Personal Identification.</h3>
+						<a href="#" id="hide_ident">I already did this, I want to edit my entry &raquo;</a>
+						<a href="#" id="show_ident" style="display:none;">Oops, go back! &raquo;</a>
+						<hr/>
+						<div class="row">
+							<div class="col-xs-6" id="fname-container">
+								<div class="form-group">
+									{{Form::label('fname', 'First Name')}}
+									{{Form::text('fname', null, array('class' => 'form-control', 'placeholder' => 'First Name'))}}
+								</div>
+							</div>
+							<div class="col-xs-6" id="lname-container">
+								<div class="form-group">
+									{{Form::label('lname', 'Last Name')}}
+									{{Form::text('lname', null, array('class' => 'form-control', 'placeholder' => 'Last Name'))}}
+								</div>
 							</div>
 						</div>
-						<div class="col-xs-6" id="lname-container">
-							<div class="form-group">
-								{{Form::label('lname', 'Last Name')}}
-								{{Form::text('lname', null, array('class' => 'form-control', 'placeholder' => 'Last Name'))}}
+						<div class="row">
+							<div class="col-xs-12" id="authenticate" style="display:none;">
+								<div class="alert alert-info">Please fill in the fields below to authenticate your request.</div>
+							</div>
+							<div class="col-xs-8">
+								<div class="form-group">
+									{{Form::label('email', 'Email')}}
+									{{Form::email('email', null, array('class' => 'form-control', 'placeholder' => 'Email'))}}
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<div class="form-group">
+									{{Form::label('lnumber', 'Locker #')}}
+									{{Form::email('lnumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-12" id="authenticate" style="display:none;">
-							<div class="alert alert-info">Please fill in the fields below to authenticate your request.</div>
-						</div>
-						<div class="col-xs-8">
-							<div class="form-group">
-								{{Form::label('email', 'Email')}}
-								{{Form::email('email', null, array('class' => 'form-control', 'placeholder' => 'Email'))}}
+						<hr/>
+						<h3>College Plans.</h3>
+						<a href="#" id="show_gapyear">I'm going on a gap year &raquo;</a>
+						<a href="#" id="hide_gapyear" style="display:none;">Never mind, hide gap year &raquo;</a>
+						<hr/>
+						<div class="row" id="gapyear_input" style="display:none;">
+							<div class="col-xs-12">
+								<div class="form-group">
+									{{Form::label('cname', 'What Country will you be in?')}}
+									<small>Bon Voyage!</small>
+									{{Form::text('cname', null, array('class' => 'form-control', 'placeholder' => 'Name of Country'))}}
+								</div>
 							</div>
 						</div>
-						<div class="col-xs-4">
-							<div class="form-group">
-								{{Form::label('lnumber', 'Locker #')}}
-								{{Form::email('lnumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
+						<div class="row" id="college_input">
+							<div class="col-xs-12" id="gap_text" style="display:none;">
+								<div class="alert alert-info">If you know where you'll be attending after your gap year, put it below! If not, just leave it blank.</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="form-group">
+									{{Form::label('cname', 'Name of School')}}
+									<small>Must be the official name</small>
+									{{Form::text('cname', null, array('class' => 'form-control', 'placeholder' => 'Name of School'))}}
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="form-group">
+									{{Form::label('major', 'Major')}}
+									{{Form::text('major', null, array('class' => 'form-control', 'placeholder' => 'Major'))}}
+								</div>
 							</div>
 						</div>
-					</div>
-					<hr/>
-					<h3>College Plans.</h3>
-					<a href="#" id="show_gapyear">I'm going on a gap year &raquo;</a>
-					<a href="#" id="hide_gapyear" style="display:none;">Never mind, hide gap year &raquo;</a>
-					<hr/>
-					<div class="row" id="gapyear_input" style="display:none;">
-						<div class="col-xs-12">
-							<div class="form-group">
-								{{Form::label('cname', 'What Country will you be in?')}}
-								<small>Bon Voyage!</small>
-								{{Form::text('cname', null, array('class' => 'form-control', 'placeholder' => 'Name of Country'))}}
-							</div>
-						</div>
-					</div>
-					<div class="row" id="college_input">
-						<div class="col-xs-12" id="gap_text" style="display:none;">
-							<div class="alert alert-info">If you know where you'll be attending after your gap year, put it below! If not, just leave it blank.</div>
-						</div>
-						<div class="col-xs-12">
-							<div class="form-group">
-								{{Form::label('cname', 'Name of School')}}
-								<small>Must be the official name</small>
-								{{Form::text('cname', null, array('class' => 'form-control', 'placeholder' => 'Name of School'))}}
-							</div>
-						</div>
-						<div class="col-xs-12">
-							<div class="form-group">
-								{{Form::label('major', 'Major')}}
-								{{Form::text('major', null, array('class' => 'form-control', 'placeholder' => 'Major'))}}
-							</div>
-						</div>
-					</div>
-					<hr/>
+						<hr/>
 					</div>
 
 					<div id="loader" style="display:none;">
@@ -112,16 +112,16 @@
 	<script>
 		$(document).ready(function() {
 			$("form").submit(function (e) {
-     			e.preventDefault();
+				e.preventDefault();
 				$('.green').addClass('sd0');
 				$('.red').addClass('sd05');
 				$('.blue').addClass('sd1');
 				$('.yellow').addClass('sd15');     			
-      			$("#loader").slideToggle();
-      			$("#form_content").slideUp();
-      			$("#submitbtn").slideToggle();
-      			console.log("prevent");
-      		});
+				$("#loader").slideToggle();
+				$("#form_content").slideUp();
+				$("#submitbtn").slideToggle();
+				console.log("prevent");
+			});
 
 			$("#show_gapyear").click(function() {
 				event.preventDefault();
@@ -158,6 +158,6 @@
 				$("#show_ident").toggle();
 			});	
 		});
-	</script>
+</script>
 </body>
 </html>
