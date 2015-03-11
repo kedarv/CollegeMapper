@@ -7,6 +7,7 @@
 	<title>CollegeMapper</title>
 	{{ HTML::style('css/bootstrap.min.css')}}
 	{{ HTML::style('css/style.css')}}
+	{{ HTML::style('css/sweet-alert.css')}}	
 </head>
 <body>
 	<div class="barloader">
@@ -109,6 +110,7 @@
 		<hr/>
 	</div>
 	{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
+	{{ HTML::script('js/sweet-alert.min.js')}}	
 	<script>
 		$(document).ready(function() {
 			$('form').submit(function(e){
@@ -128,7 +130,7 @@
 				url = $form.attr( "action"),
 				method = $form.attr( "method" );
 				$('#error').fadeOut("fast");
-				jQuery(".form-group").removeClass('has-error has-success');	
+				jQuery(".form-group").removeClass('has-error has-success').addClass('has-success');	
 				$.ajax({
 					url: "{{action('PageController@postMark')}}",
 					data: dataFrom,
@@ -139,15 +141,20 @@
 					success: function (response) {
 						var errors = "";
 						if (response['status'] == 'success') {
-							$('#error').removeClass('hide alert-danger').addClass('alert-success').fadeIn("slow").html("Logging in...");
-							location.reload();
+							console.log("success");
 						}
 						else {
 							$.each( response['text'], function( index, value ){
 								jQuery("#" + index).parent('div').addClass('has-error');
-								errors += (value  + "<br/>");
+								errors += (value  + "\n");
 							})
-							$('#error').removeClass('hide').addClass('alert-danger').fadeIn("slow").html(errors);
+							swal({
+								title: "Error!",
+								text: errors,
+								type: "error",
+								confirmButtonText: "OK",
+								allowOutsideClick: true
+							});
 						}
 						console.log(response['text']);
 					}
