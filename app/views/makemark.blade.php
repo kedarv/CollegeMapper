@@ -55,7 +55,7 @@
 							<div class="col-xs-4">
 								<div class="form-group">
 									{{Form::label('lockerNumber', 'Locker #')}}
-									{{Form::email('lockerNumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
+									{{Form::text('lockerNumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
 								</div>
 							</div>
 						</div>
@@ -128,6 +128,7 @@
 				url = $form.attr( "action"),
 				method = $form.attr( "method" );
 				$('#error').fadeOut("fast");
+				jQuery(".form-group").removeClass('has-error has-success');	
 				$.ajax({
 					url: "{{action('PageController@postMark')}}",
 					data: dataFrom,
