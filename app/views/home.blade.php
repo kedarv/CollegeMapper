@@ -10,6 +10,5 @@
 </head>
 <body>
 {{link_to_action('PageController@makeMark', 'Add Marker')}}
-view
 </body>
 </html>

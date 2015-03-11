@@ -23,7 +23,7 @@
 					<div id="form_content">
 						<h1>Make your <b>mark</b>er.</h1>
 						<hr/>
-						{{ Form::open(array('id' => 'create')) }}
+						{{Form::open(array('action' => 'PageController@postMark', 'id' => 'create'))}}
 						<h3>Personal Identification.</h3>
 						<a href="#" id="hide_ident">I already did this, I want to edit my entry &raquo;</a>
 						<a href="#" id="show_ident" style="display:none;">Oops, go back! &raquo;</a>
@@ -31,14 +31,14 @@
 						<div class="row">
 							<div class="col-xs-6" id="fname-container">
 								<div class="form-group">
-									{{Form::label('fname', 'First Name')}}
-									{{Form::text('fname', null, array('class' => 'form-control', 'placeholder' => 'First Name'))}}
+									{{Form::label('firstName', 'First Name')}}
+									{{Form::text('firstName', null, array('class' => 'form-control', 'placeholder' => 'First Name'))}}
 								</div>
 							</div>
 							<div class="col-xs-6" id="lname-container">
 								<div class="form-group">
-									{{Form::label('lname', 'Last Name')}}
-									{{Form::text('lname', null, array('class' => 'form-control', 'placeholder' => 'Last Name'))}}
+									{{Form::label('lastName', 'Last Name')}}
+									{{Form::text('lastName', null, array('class' => 'form-control', 'placeholder' => 'Last Name'))}}
 								</div>
 							</div>
 						</div>
@@ -54,8 +54,8 @@
 							</div>
 							<div class="col-xs-4">
 								<div class="form-group">
-									{{Form::label('lnumber', 'Locker #')}}
-									{{Form::email('lnumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
+									{{Form::label('lockerNumber', 'Locker #')}}
+									{{Form::email('lockerNumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
 								</div>
 							</div>
 						</div>
@@ -67,9 +67,9 @@
 						<div class="row" id="gapyear_input" style="display:none;">
 							<div class="col-xs-12">
 								<div class="form-group">
-									{{Form::label('cname', 'What Country will you be in?')}}
+									{{Form::label('countryName', 'What Country will you be in?')}}
 									<small>Bon Voyage!</small>
-									{{Form::text('cname', null, array('class' => 'form-control', 'placeholder' => 'Name of Country'))}}
+									{{Form::text('countryName', null, array('class' => 'form-control', 'placeholder' => 'Name of Country'))}}
 								</div>
 							</div>
 						</div>
@@ -79,9 +79,9 @@
 							</div>
 							<div class="col-xs-12">
 								<div class="form-group">
-									{{Form::label('cname', 'Name of School')}}
+									{{Form::label('schoolName', 'Name of School')}}
 									<small>Must be the official name</small>
-									{{Form::text('cname', null, array('class' => 'form-control', 'placeholder' => 'Name of School'))}}
+									{{Form::text('schoolName', null, array('class' => 'form-control', 'placeholder' => 'Name of School'))}}
 								</div>
 							</div>
 							<div class="col-xs-12">
@@ -111,18 +111,47 @@
 	{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
 	<script>
 		$(document).ready(function() {
-			$("form").submit(function (e) {
+			$('form').submit(function(e){
 				e.preventDefault();
-				$('.green').addClass('sd0');
-				$('.red').addClass('sd05');
-				$('.blue').addClass('sd1');
-				$('.yellow').addClass('sd15');     			
-				$("#loader").slideToggle();
-				$("#form_content").slideUp();
-				$("#submitbtn").slideToggle();
-				console.log("prevent");
-			});
+				// $('.green').addClass('sd0');
+				// $('.red').addClass('sd05');
+				// $('.blue').addClass('sd1');
+				// $('.yellow').addClass('sd15');     			
+				// $("#loader").slideToggle();
+				// $("#form_content").slideUp();
+				// $("#submitbtn").slideToggle();
+				// console.log("prevent");
+				// end UI changes
 
+				var $form = $( this ),
+				dataFrom = $form.serialize(),
+				url = $form.attr( "action"),
+				method = $form.attr( "method" );
+				$('#error').fadeOut("fast");
+				$.ajax({
+					url: "{{action('PageController@postMark')}}",
+					data: dataFrom,
+					type: method,
+					beforeSend: function(request) {
+						return request.setRequestHeader('X-CSRF-Token', $("meta[name='token']").attr('content'));
+					},
+					success: function (response) {
+						var errors = "";
+						if (response['status'] == 'success') {
+							$('#error').removeClass('hide alert-danger').addClass('alert-success').fadeIn("slow").html("Logging in...");
+							location.reload();
+						}
+						else {
+							$.each( response['text'], function( index, value ){
+								jQuery("#" + index).parent('div').addClass('has-error');
+								errors += (value  + "<br/>");
+							})
+							$('#error').removeClass('hide').addClass('alert-danger').fadeIn("slow").html(errors);
+						}
+						console.log(response['text']);
+					}
+				});
+			});
 			$("#show_gapyear").click(function() {
 				event.preventDefault();
 				$("#gap_year_field").val(1);
@@ -158,6 +187,6 @@
 				$("#show_ident").toggle();
 			});	
 		});
-</script>
+	</script>
 </body>
 </html>
