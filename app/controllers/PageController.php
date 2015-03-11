@@ -37,7 +37,7 @@ class PageController extends BaseController {
 	    				'firstName' => 'required|alpha',
 	    				'lastName' => 'required|alpha',
 	    				'email' => 'required|email|unique:users',
-						'lockerNumber' => 'required|integer|unique:users',
+						'lockerNumber' => 'required|integer|unique:users,locker',
 						'schoolName' => 'required|alpha_spaces',
 						'major' => 'required',
 	    				)
@@ -76,7 +76,7 @@ class PageController extends BaseController {
 	    				'firstName' => 'required|alpha',
 	    				'lastName' => 'required|alpha',
 	    				'email' => 'required|email|unique:users',
-						'lockerNumber' => 'required|integer|unique:users',
+						'lockerNumber' => 'required|integer|unique:users,locker',
 						'countryName' => 'required|alpha_spaces',
 						'schoolName' => 'alpha_spaces',
 						'major' => '',
