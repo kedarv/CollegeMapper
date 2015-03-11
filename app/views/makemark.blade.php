@@ -9,6 +9,12 @@
 	{{ HTML::style('css/style.css')}}
 </head>
 <body>
+	<div class="barloader">
+ 		<div class="green"></div>
+  		<div class="red"></div>
+  		<div class="blue"></div>
+  		<div class="yellow"></div>
+	</div>
 	<div class="container">
 		<hr/>
 		<div class="row">
@@ -87,6 +93,7 @@
 					</div>
 					<hr/>
 					</div>
+
 					<div id="loader" style="display:none;">
 						<h1>Working...</h1>
 						<hr/>
@@ -105,7 +112,11 @@
 	<script>
 		$(document).ready(function() {
 			$("form").submit(function (e) {
-      			e.preventDefault();
+     			e.preventDefault();
+				$('.green').addClass('sd0');
+				$('.red').addClass('sd05');
+				$('.blue').addClass('sd1');
+				$('.yellow').addClass('sd15');     			
       			$("#loader").slideToggle();
       			$("#form_content").slideUp();
       			$("#submitbtn").slideToggle();
