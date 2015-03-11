@@ -141,7 +141,7 @@
 					success: function (response) {
 						var errors = "";
 						if (response['status'] == 'success') {
-							console.log("success");
+							console.log("success recieved from view");
 						}
 						else {
 							$.each( response['text'], function( index, value ){

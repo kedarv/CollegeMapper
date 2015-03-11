@@ -106,16 +106,11 @@ class PageController extends BaseController {
     			$response = array('status' => 'danger', 'text' => $validator->messages());
     		}
     		else {
-    			$response = array('status' => 'danger', 'text' => $validator->messages());
-    			// $user = new User;
-    			// $user->puid = Crypt::encrypt(Input::get('puid'));
-    			// $user->email = Input::get('email');
-    			// $user->password = Hash::make(Input::get('password'));
-    			// $user->save();
-
-    			// $user = User::find($user->id);
-    			// Auth::login($user);
-    			// $response = array('status' => 'success', 'text' => 'Success');
+    			// if edit is true do db validation
+    			// else create new user
+	    			// $user = new User;
+	    			// $user->save();
+    			$response = array('status' => 'success', 'text' => 'Success');
     		}
     		return Response::json($response); 
     		exit();
