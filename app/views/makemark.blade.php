@@ -14,7 +14,8 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="well well2">
-					<h1>make your <b>mark</b>er.</h1>
+				<div id="form_content">
+					<h1>Make your <b>mark</b>er.</h1>
 					<hr/>
 					{{ Form::open(array('id' => 'create')) }}
 					<h3>Personal Identification.</h3>
@@ -36,6 +37,9 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-xs-12" id="authenticate" style="display:none;">
+							<div class="alert alert-info">Please fill in the fields below to authenticate your request.</div>
+						</div>
 						<div class="col-xs-8">
 							<div class="form-group">
 								{{Form::label('email', 'Email')}}
@@ -45,7 +49,7 @@
 						<div class="col-xs-4">
 							<div class="form-group">
 								{{Form::label('lnumber', 'Locker #')}}
-								{{Form::email('lnumber', null, array('class' => 'form-control', 'placeholder' => 'Locker #'))}}
+								{{Form::email('lnumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
 							</div>
 						</div>
 					</div>
@@ -82,7 +86,13 @@
 						</div>
 					</div>
 					<hr/>
-					 <button type="button" class="btn btn-primary btn-lg">Submit</button>
+					</div>
+					<div id="loader" style="display:none;">
+						<h1>Working...</h1>
+						<hr/>
+						<div class="spinner"></div>
+					</div>
+					{{ Form::submit('Submit', array('class' => 'btn btn-primary btn-lg', 'id' => 'submitbtn')) }}
 				</div>
 				{{ Form::hidden('edit', '0', array('id' => 'edit'))}}
 				{{ Form::hidden('gapyear', '0', array('id' => 'gap_year_field'))}}
@@ -94,6 +104,14 @@
 	{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
 	<script>
 		$(document).ready(function() {
+			$("form").submit(function (e) {
+      			e.preventDefault();
+      			$("#loader").slideToggle();
+      			$("#form_content").slideUp();
+      			$("#submitbtn").slideToggle();
+      			console.log("prevent");
+      		});
+
 			$("#show_gapyear").click(function() {
 				event.preventDefault();
 				$("#gap_year_field").val(1);
@@ -113,6 +131,7 @@
 			$("#hide_ident").click(function() {
 				event.preventDefault();
 				$("#edit").val(1);
+				$("#authenticate").slideToggle();
 				$("#fname-container").slideToggle();
 				$("#lname-container").slideToggle();
 				$("#hide_ident").toggle();
@@ -121,6 +140,7 @@
 			$("#show_ident").click(function() {
 				event.preventDefault();
 				$("#edit").val(0);
+				$("#authenticate").slideToggle();
 				$("#fname-container").slideToggle();
 				$("#lname-container").slideToggle();
 				$("#hide_ident").toggle();
