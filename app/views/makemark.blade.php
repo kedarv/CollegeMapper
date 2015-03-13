@@ -140,7 +140,7 @@
 							$("#loader").slideToggle();
 							$("#form_content").slideUp();
 							$("#submitbtn").slideToggle();							
-							console.log("success recieved from view");
+							//console.log("success recieved from view");
 						}
 						else if(response['status'] == 'badauth') {
 							$("#email_container").removeClass("has-success has-error").addClass("has-error");
@@ -152,7 +152,7 @@
 								confirmButtonText: "OK",
 								allowOutsideClick: true
 							});
-							console.log("info");
+							//console.log("info");
 						}
 						else {
 							$.each( response['text'], function( index, value ){
@@ -167,7 +167,7 @@
 								allowOutsideClick: true
 							});
 						}
-						console.log(response['text']);
+						//console.log(response['text']);
 					}
 				});
 			});

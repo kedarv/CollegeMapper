@@ -121,7 +121,7 @@ class PageController extends BaseController {
 						}
 						$user->touch();
 						$user->save();
-						$response = array('status' => 'success', 'text' => 'Success');		
+						$response = array('status' => 'success', 'text' => $user->id);		
 					}
 
     				// Send authentication error
@@ -143,7 +143,7 @@ class PageController extends BaseController {
 						$user->country = Input::get('countryName');
 					}
 					$user->save();
-					$response = array('status' => 'success', 'text' => 'Success');
+					$response = array('status' => 'success', 'text' => $user->id);
 				}
 			}
 			return Response::json($response); 
