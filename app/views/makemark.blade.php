@@ -17,7 +17,7 @@
 		<div class="yellow"></div>
 	</div>
 	<div class="container">
-		<hr/>
+		<br/>
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="well well2">
@@ -48,13 +48,13 @@
 								<div class="alert alert-info">Please fill in the fields below to authenticate your request.</div>
 							</div>
 							<div class="col-xs-8">
-								<div class="form-group">
+								<div class="form-group" id="email_container">
 									{{Form::label('email', 'Email')}}
 									{{Form::email('email', null, array('class' => 'form-control', 'placeholder' => 'Email'))}}
 								</div>
 							</div>
 							<div class="col-xs-4">
-								<div class="form-group">
+								<div class="form-group" id="locker_container">
 									{{Form::label('lockerNumber', 'Locker #')}}
 									{{Form::text('lockerNumber', null, array('class' => 'form-control', 'placeholder' => '#'))}}
 								</div>
@@ -94,7 +94,6 @@
 						</div>
 						<hr/>
 					</div>
-
 					<div id="loader" style="display:none;">
 						<h1>Working...</h1>
 						<hr/>
@@ -108,6 +107,9 @@
 			</div>
 		</div>
 		<hr/>
+		<a href="http://github.com/kedarv">@kedarv</a>
+		<br/>
+		<br/>
 	</div>
 	{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
 	{{ HTML::script('js/sweet-alert.min.js')}}	
@@ -115,16 +117,6 @@
 		$(document).ready(function() {
 			$('form').submit(function(e){
 				e.preventDefault();
-				// $('.green').addClass('sd0');
-				// $('.red').addClass('sd05');
-				// $('.blue').addClass('sd1');
-				// $('.yellow').addClass('sd15');     			
-				// $("#loader").slideToggle();
-				// $("#form_content").slideUp();
-				// $("#submitbtn").slideToggle();
-				// console.log("prevent");
-				// end UI changes
-
 				var $form = $( this ),
 				dataFrom = $form.serialize(),
 				url = $form.attr( "action"),
@@ -141,7 +133,26 @@
 					success: function (response) {
 						var errors = "";
 						if (response['status'] == 'success') {
+							$('.green').addClass('sd0');
+							$('.red').addClass('sd05');
+							$('.blue').addClass('sd1');
+							$('.yellow').addClass('sd15');     			
+							$("#loader").slideToggle();
+							$("#form_content").slideUp();
+							$("#submitbtn").slideToggle();							
 							console.log("success recieved from view");
+						}
+						else if(response['status'] == 'badauth') {
+							$("#email_container").removeClass("has-success has-error").addClass("has-error");
+							$("#locker_container").removeClass("has-success has-error").addClass("has-error");
+							swal({
+								type: "warning",
+								title: "Oops!",
+								text: response['text'],
+								confirmButtonText: "OK",
+								allowOutsideClick: true
+							});
+							console.log("info");
 						}
 						else {
 							$.each( response['text'], function( index, value ){
