@@ -23,7 +23,8 @@ class CreateUsersTable extends Migration {
 			$table->string('major');
 			$table->decimal('lat', 10, 8)->nullable();
 			$table->decimal('lng', 11, 8)->nullable();
-			$table->string('description');
+			$table->integer('milesfromhome');
+			$table->text('description');
 			$table->text('image');
 			$table->timestamps();
 			$table->softDeletes();
