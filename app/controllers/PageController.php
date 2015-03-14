@@ -150,4 +150,10 @@ class PageController extends BaseController {
 			exit();
 		}
 	}
+	public function processInfo() {
+		if (Request::ajax()) {
+			$id = Input::get("id");
+
+		}
+	}
 }

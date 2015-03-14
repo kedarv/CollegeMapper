@@ -140,7 +140,11 @@
 							$("#loader").slideToggle();
 							$("#form_content").slideUp();
 							$("#submitbtn").slideToggle();							
-							//console.log("success recieved from view");
+							$.ajax({
+					            method: 'post',				            
+					            data: {id : response['text']},
+					            url: '{{action('PageController@processInfo')}}',
+					        }); 
 						}
 						else if(response['status'] == 'badauth') {
 							$("#email_container").removeClass("has-success has-error").addClass("has-error");
