@@ -20,7 +20,11 @@ class CreateUsersTable extends Migration {
 			$table->integer('locker');
 			$table->string('country');		
 			$table->string('school');
-			$table->string('major');				
+			$table->string('major');
+			$table->decimal('lat', 10, 8)->nullable();
+			$table->decimal('lng', 11, 8)->nullable();
+			$table->string('description');
+			$table->text('image');
 			$table->timestamps();
 			$table->softDeletes();
 		});
