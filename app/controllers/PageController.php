@@ -15,15 +15,22 @@ class PageController extends BaseController {
 	*/
 
 	public function showHome() {
-		return View::make('home');
+		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get()->toArray();
+		return View::make('home', $data);
 	}
 	public function makeMark() {
 		return View::make('makemark');
 	}
 	public function postMark() {
 		if (Request::ajax()) {
+			/* 
+			*  We have four different cases for validation, all of which need different rules
+			*  1. User is not editing an entry, and is not on a gap year
+			*  2. User is editing an entry, and is not on a gap year
+			*  3. User is not editing an entry, and is on a gap year
+			*  4. User is editing an entry, and is on a gap year
+			*/
 			if(Input::get('gapyear') == 0 && Input::get('edit') == 0) {
-    			//Log::info("NO gapyear NO edit");
 				$validator = Validator::make(
 					array(
 						'firstName' => Input::get('firstName'),
@@ -44,7 +51,6 @@ class PageController extends BaseController {
 					);
 			}
 			elseif(Input::get('gapyear') == 0 && Input::get('edit') == 1) {
-    			//Log::info("NO gapyear YES edit");
 				$validator = Validator::make(
 					array(
 						'email' => Input::get('email'),
@@ -61,7 +67,6 @@ class PageController extends BaseController {
 					);
 			}
 			elseif(Input::get('gapyear') == 1 && Input::get('edit') == 0) {
-    			//Log::info("YES gapyear NO edit");
 				$validator = Validator::make(
 					array(
 						'firstName' => Input::get('firstName'),
@@ -83,8 +88,7 @@ class PageController extends BaseController {
 						)
 					);  			
 			}
-			elseif(Input::get('gapyear') == 1 && Input::get('edit') == 1) {
-    			//Log::info("YES gapyear YES edit");    			
+			elseif(Input::get('gapyear') == 1 && Input::get('edit') == 1) {			
 				$validator = Validator::make(
 					array(
 						'email' => Input::get('email'),
@@ -159,9 +163,12 @@ class PageController extends BaseController {
 			$user->description = $this->getWikiDescription($college);
 			$user->image = $this->getWikiImage($college);
 			$user->save();
+			$response = array('status' => 'success');
 		}
-		return $this->getWikiImage($college);
-		//return Response::json($response); 
+		else {
+			$response = array('status' => 'error', 'text' => 'bad request');
+		}
+		return Response::json($response); 
 		exit();
 	}
 
@@ -176,8 +183,7 @@ class PageController extends BaseController {
 		return $d;
 	}
 	public function getWikiDescription($college) {
-		urlencode($url = "http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=".$college."&continue");
-		// cURL stuff
+		$url = urlencode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=".$college."&continue");
 		$ch = curl_init($url);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
@@ -192,12 +198,12 @@ class PageController extends BaseController {
 		return $description;
 	}
 	public function getWikiImage($college) {
-		urlencode ($url = "http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects");
-		// cURL stuff
+		$url = urlencode ("http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects");
 		$ch = curl_init($url);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
 		$c = curl_exec($ch);
+
 		$json = json_decode($c,true);
 		$imgarray = $json['query']['pages'];
 		$imgpageid = key($imgarray);
