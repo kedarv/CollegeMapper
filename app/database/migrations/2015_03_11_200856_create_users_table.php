@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration {
 			$table->string('firstname');
 			$table->string('lastname');	
 			$table->integer('locker');
-			$table->string('country');		
+			$table->string('state');
+			$table->string('country');
 			$table->string('school');
 			$table->string('major');
 			$table->decimal('lat', 10, 8)->nullable();

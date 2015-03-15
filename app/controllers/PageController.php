@@ -1,22 +1,9 @@
 <?php
 
 class PageController extends BaseController {
-
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|
-	*/
-
 	public function showHome() {
-		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get()->toArray();
-		return View::make('home', $data);
+		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image'))->toArray();
+		return View::make('home', compact('data'));
 	}
 	public function makeMark() {
 		return View::make('makemark');
@@ -158,10 +145,16 @@ class PageController extends BaseController {
 		if (Request::ajax()) {
 			$id = Input::get("id");
 			$user = User::find($id);
+			$string = str_replace(" ", "+", $user->school);
+			$locationArray = $this->lookup($string);
 			$college = str_replace(" ", "_", $user->school);
 			$college = str_replace("-", "%E2%80%93", $college);
+			$user->lat = $locationArray['lat'];
+			$user->lng = $locationArray['lng'];
+			$user->school = $locationArray['propername'];
 			$user->description = $this->getWikiDescription($college);
 			$user->image = $this->getWikiImage($college);
+			$user->milesfromhome = $this->getDistance($locationArray['lat'], $locationArray['lng'], 40.101952, -88.227161) * .62137;
 			$user->save();
 			$response = array('status' => 'success');
 		}
@@ -173,7 +166,7 @@ class PageController extends BaseController {
 	}
 
 	# Haversine Formula to find distance between two geographic points
-	function getDistance($latitude1, $longitude1, $latitude2, $longitude2) {
+	public function getDistance($latitude1, $longitude1, $latitude2, $longitude2) {
 		$earth_radius = 6371;
 		$dLat = deg2rad($latitude2 - $latitude1);
 		$dLon = deg2rad($longitude2 - $longitude1);
@@ -182,32 +175,80 @@ class PageController extends BaseController {
 		$d = $earth_radius * $c;
 		return $d;
 	}
+	/**
+	* Fetches the first 900 characters of a Wikipedia page
+	* @param String $college Name of the college, must be properly formatted
+	* @return First 900 characters 
+	*/
 	public function getWikiDescription($college) {
-		$url = urlencode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=".$college."&continue");
+		$url = "http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=".$college."&continue";
 		$ch = curl_init($url);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
 		$c = curl_exec($ch);
+		curl_close($ch);
 
 		$json = json_decode($c,true);
-		var_dump($json);
-		var_dump($url);
 		$pagearray = $json['query']['pages'];
 		$pageid = key($pagearray);
 		$description = substr(trim(preg_replace('/\s+/', ' ', htmlspecialchars($pagearray[$pageid]['extract'], ENT_QUOTES))), 0, 900);
 		return $description;
 	}
+	/**
+	* Fetches the first image of a Wikipedia page
+	* @param String $college Name of the college, must be properly formatted
+	* @return Link to image 
+	*/
 	public function getWikiImage($college) {
-		$url = urlencode ("http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects");
+		$url = "http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects";
 		$ch = curl_init($url);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
 		$c = curl_exec($ch);
 
 		$json = json_decode($c,true);
+		curl_close($ch);
 		$imgarray = $json['query']['pages'];
 		$imgpageid = key($imgarray);
 		$imglink = $imgarray[$imgpageid]['thumbnail']['source'];
 		return $imglink;
+	}
+	/**
+	* Fetches the first image of a Wikipedia page
+	* @param String $string Name of the college, must be properly formatted
+	* @return Array containing lat, lng, state, country, propername 
+	*/
+	public function lookup($string){
+		$url = "http://maps.googleapis.com/maps/api/geocode/json?address=".$string."&sensor=false";
+		$ch = curl_init($url);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
+		$c = curl_exec($ch);
+		$response = json_decode($c,true);
+		curl_close($ch);
+		$latitude = $response['results'][0]['geometry']['location']['lat'];
+		$longitude = $response['results'][0]['geometry']['location']['lng'];
+		foreach ($response["results"] as $result) {
+			foreach ($result["address_components"] as $address) {
+				if (in_array("administrative_area_level_1", $address["types"])) {
+					$state = $address["long_name"];
+				}
+				if (in_array("country", $address["types"])) {
+					$country = $address["long_name"];
+				}
+				if (in_array("establishment", $address["types"])) {
+					$propername = $address["long_name"];
+				}
+			}
+			break;
+		}
+		$location_array = array(
+			"lat" => $latitude,
+			"lng" => $longitude,
+			"state" => $state,
+			"country" => $country,
+			"propername" => $propername,
+		);
+		return $location_array;
 	}
 }

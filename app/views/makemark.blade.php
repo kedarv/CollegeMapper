@@ -144,6 +144,11 @@
 					            method: 'post',				            
 					            data: {id : response['text']},
 					            url: '{{action('PageController@processInfo')}}',
+					            success: function (response) {
+					            	if(response['status'] == 'success') {
+					            		window.location.href = "{{action('PageController@showHome')}}";
+					            	}
+					            }
 					        }); 
 						}
 						else if(response['status'] == 'badauth') {
