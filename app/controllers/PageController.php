@@ -146,15 +146,15 @@ class PageController extends BaseController {
 			$id = Input::get("id");
 			$user = User::find($id);
 			$string = str_replace(" ", "+", $user->school);
-			$locationArray = $this->lookup($string);
-			$college = str_replace(" ", "_", $user->school);
+			$gecodeArray = $this->lookup($string);
+			$college = str_replace(" ", "_", $gecodeArray['propername']);
 			$college = str_replace("-", "%E2%80%93", $college);
-			$user->lat = $locationArray['lat'];
-			$user->lng = $locationArray['lng'];
-			$user->school = $locationArray['propername'];
+			$user->lat = $gecodeArray['lat'];
+			$user->lng = $gecodeArray['lng'];
+			$user->school = $gecodeArray['propername'];
 			$user->description = $this->getWikiDescription($college);
 			$user->image = $this->getWikiImage($college);
-			$user->milesfromhome = $this->getDistance($locationArray['lat'], $locationArray['lng'], 40.101952, -88.227161) * .62137;
+			$user->milesfromhome = $this->getDistance($gecodeArray['lat'], $gecodeArray['lng'], 40.101952, -88.227161) * .62137;
 			$user->save();
 			$response = array('status' => 'success');
 		}
@@ -187,7 +187,7 @@ class PageController extends BaseController {
 		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
 		$c = curl_exec($ch);
 		curl_close($ch);
-
+		//var_dump($url);
 		$json = json_decode($c,true);
 		$pagearray = $json['query']['pages'];
 		$pageid = key($pagearray);
