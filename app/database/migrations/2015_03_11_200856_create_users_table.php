@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration {
 			$table->integer('milesfromhome');
 			$table->text('description');
 			$table->text('image');
+			$table->string('prefix');
 			$table->timestamps();
 			$table->softDeletes();
 		});

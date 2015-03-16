@@ -2,7 +2,7 @@
 
 class PageController extends BaseController {
 	public function showHome() {
-		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image'))->toArray();
+		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image', 'country', 'prefix'))->toArray();
 		return View::make('home', compact('data'));
 	}
 	public function makeMark() {
@@ -146,15 +146,22 @@ class PageController extends BaseController {
 			$id = Input::get("id");
 			$user = User::find($id);
 			$string = str_replace(" ", "+", $user->school);
-			$gecodeArray = $this->lookup($string);
-			$college = str_replace(" ", "_", $gecodeArray['propername']);
+			$geocodeArray = $this->lookup($string);
+			$college = str_replace(" ", "_", $geocodeArray['propername']);
 			$college = str_replace("-", "%E2%80%93", $college);
-			$user->lat = $gecodeArray['lat'];
-			$user->lng = $gecodeArray['lng'];
-			$user->school = $gecodeArray['propername'];
+			$user->lat = $geocodeArray['lat'];
+			$user->lng = $geocodeArray['lng'];
+			if($user->country == "") {
+				$user->state = $geocodeArray['state'];
+			}
+			$user->school = $geocodeArray['propername'];
 			$user->description = $this->getWikiDescription($college);
 			$user->image = $this->getWikiImage($college);
-			$user->milesfromhome = $this->getDistance($gecodeArray['lat'], $gecodeArray['lng'], 40.101952, -88.227161) * .62137;
+			$user->milesfromhome = $this->getDistance($geocodeArray['lat'], $geocodeArray['lng'], 40.101952, -88.227161) * .62137;
+			$arr = explode(' ',trim($geocodeArray['propername']));
+			if (strpos($arr[0], 'University') !== false || strpos($arr[0],'College') !== false) {
+				$user->prefix = "the";
+			}
 			$user->save();
 			$response = array('status' => 'success');
 		}
@@ -192,6 +199,9 @@ class PageController extends BaseController {
 		$pagearray = $json['query']['pages'];
 		$pageid = key($pagearray);
 		$description = substr(trim(preg_replace('/\s+/', ' ', htmlspecialchars($pagearray[$pageid]['extract'], ENT_QUOTES))), 0, 900);
+		if(strlen($description) == 900) {
+			$description = $description . "...";
+		}
 		return $description;
 	}
 	/**
