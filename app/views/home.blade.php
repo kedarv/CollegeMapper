@@ -54,6 +54,9 @@
 			</div>
 			<div class="tab-pane fade" id="faq">
 				<br/>
+				<b>Q.</b> Who wrote this app?<br/>
+				<b>A.</b> <a href="http://kedarv.org.uk">Kedar,</a> a Uni High Class of 2014 grad, currently attending Purdue University.
+				<hr/>
 				<b>Q.</b> How is this data collected?<br/>
 				<b>A.</b> Students willingly provide this information, and all data collected is stored permanently.
 				<hr/>
@@ -83,7 +86,7 @@
 		<div class="modal-content">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h4 class="modal-title" id="myModalLabel"></h4>
+			<h4 class="modal-title info-title" id="myModalLabel"></h4>
 		  </div>
 		  <div class="modal-body">
 			<div class="text-center">
@@ -164,7 +167,7 @@
 			$('#infoModal').modal('show');
 			$(".modal-body #myInfo").html(myID);
 			$("#logo").attr("src", myLogo);
-			$(".modal-title").html(myName);
+			$(".info-title").html(myName);
 			$(".wiki").attr("href", "http://en.wikipedia.org/wiki/" + linkName)
 		});
 	</script>
