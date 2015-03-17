@@ -3,7 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
 	<title>CollegeMapper</title>
 	{{ HTML::style('css/bootstrap.min.css')}}
 	{{ HTML::style('css/style.css')}}
@@ -26,7 +27,7 @@
 						<hr/>
 						{{Form::open(array('action' => 'PageController@postMark', 'id' => 'create'))}}
 						<h3>Personal Identification.</h3>
-						<a href="#" id="hide_ident">I already did this, I want to edit my entry &raquo;</a>
+						<a href="#" id="hide_ident">I already did this, edit my entry &raquo;</a>
 						<a href="#" id="show_ident" style="display:none;">Oops, go back! &raquo;</a>
 						<hr/>
 						<div class="row">
@@ -71,6 +72,13 @@
 									{{Form::label('countryName', 'What Country will you be in?')}}
 									<small>Bon Voyage!</small>
 									{{Form::text('countryName', null, array('class' => 'form-control', 'placeholder' => 'Name of Country'))}}
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="checkbox">
+									<label>
+										{{Form::checkbox('studyAbroad', 1, null, array('id' => 'studyabroad'))}} Will you be studying abroad?
+									</label>
 								</div>
 							</div>
 						</div>
@@ -180,18 +188,26 @@
 					}
 				});
 			});
+			
+			$("#studyabroad").click(function() {
+				$("#gap_text").slideToggle();
+			});
 			$("#show_gapyear").click(function() {
 				event.preventDefault();
 				$("#gap_year_field").val(1);
-				$("#gap_text").slideToggle();
+				if($("#gap_text").is(":hidden") && !($("#studyabroad").is(':checked'))) {
+					$("#gap_text").slideToggle();
+				}
 				$("#gapyear_input").slideToggle();		
 				$("#show_gapyear").toggle();
 				$("#hide_gapyear").toggle();			
 			});
 			$("#hide_gapyear").click(function() {
 				event.preventDefault();
+				if($("#gap_text").is(":visible")) {
+					$("#gap_text").slideToggle();
+				}
 				$("#gap_year_field").val(0);
-				$("#gap_text").slideToggle();
 				$("#gapyear_input").slideToggle();				
 				$("#show_gapyear").toggle();
 				$("#hide_gapyear").toggle();

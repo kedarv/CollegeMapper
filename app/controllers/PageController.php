@@ -10,89 +10,135 @@ class PageController extends BaseController {
 	}
 	public function postMark() {
 		if (Request::ajax()) {
-			/* 
-			*  We have four different cases for validation, all of which need different rules
-			*  1. User is not editing an entry, and is not on a gap year
-			*  2. User is editing an entry, and is not on a gap year
-			*  3. User is not editing an entry, and is on a gap year
-			*  4. User is editing an entry, and is on a gap year
+			/**
+			*  We have six different cases for validation, all of which need different rules. There are three 'base' cases
+			*  First we check if the form is being edited. If it is, we throw away the firstName and lastName rules
+			*  Case 1: User is not going on a gap year
+			*  Case 2: User is going on a gap year, and is NOT studying abroad
+			*  Case 3: User is going on a gap year, and IS studying abroad
+			*  All three cases are present for both larger cases, editing and not editing.
 			*/
-			if(Input::get('gapyear') == 0 && Input::get('edit') == 0) {
-				$validator = Validator::make(
-					array(
-						'firstName' => Input::get('firstName'),
-						'lastName' => Input::get('lastName'),
-						'email' => Input::get('email'),
-						'lockerNumber' => Input::get('lockerNumber'),
-						'schoolName' => Input::get('schoolName'),
-						'major' => Input::get('major'),
+			if(Input::get('edit') == 0) {
+				if(Input::get('gapyear') == 0) {
+					$validator = Validator::make(
+						array(
+							'firstName' => Input::get('firstName'),
+							'lastName' => Input::get('lastName'),
+							'email' => Input::get('email'),
+							'lockerNumber' => Input::get('lockerNumber'),
+							'schoolName' => Input::get('schoolName'),
+							'major' => Input::get('major'),
 						),
-					array(
-						'firstName' => 'required|alpha',
-						'lastName' => 'required|alpha',
-						'email' => 'required|email|unique:users',
-						'lockerNumber' => 'required|integer|unique:users,locker',
-						'schoolName' => 'required|alpha_spaces',
-						'major' => 'required',
+						array(
+							'firstName' => 'required|alpha',
+							'lastName' => 'required|alpha',
+							'email' => 'required|email|unique:users',
+							'lockerNumber' => 'required|integer|unique:users,locker',
+							'schoolName' => 'required|alpha_spaces',
+							'major' => 'required',
 						)
 					);
-			}
-			elseif(Input::get('gapyear') == 0 && Input::get('edit') == 1) {
-				$validator = Validator::make(
-					array(
-						'email' => Input::get('email'),
-						'lockerNumber' => Input::get('lockerNumber'),
-						'schoolName' => Input::get('schoolName'),
-						'major' => Input::get('major'),
+				}
+				elseif(Input::get('gapyear') == 1 && Input::get('studyAbroad') == 0) {
+					$validator = Validator::make(
+						array(
+							'firstName' => Input::get('firstName'),
+							'lastName' => Input::get('lastName'),
+							'email' => Input::get('email'),
+							'lockerNumber' => Input::get('lockerNumber'),
+							'countryName' => Input::get('countryName'),
+							'schoolName' => Input::get('schoolName'),
+							'major' => Input::get('major'),
 						),
-					array(
-						'email' => 'required|email',
-						'lockerNumber' => 'required|integer',
-						'schoolName' => 'required|alpha_spaces',
-						'major' => 'required',
+						array(
+							'firstName' => 'required|alpha',
+							'lastName' => 'required|alpha',
+							'email' => 'required|email|unique:users',
+							'lockerNumber' => 'required|integer|unique:users,locker',
+							'countryName' => 'required|alpha_spaces',
+							'schoolName' => 'alpha_spaces',
+							'major' => '',
 						)
 					);
-			}
-			elseif(Input::get('gapyear') == 1 && Input::get('edit') == 0) {
-				$validator = Validator::make(
-					array(
-						'firstName' => Input::get('firstName'),
-						'lastName' => Input::get('lastName'),
-						'email' => Input::get('email'),
-						'lockerNumber' => Input::get('lockerNumber'),
-						'countryName' => Input::get('countryName'),
-						'schoolName' => Input::get('schoolName'),
-						'major' => Input::get('major'),
+				}
+				elseif(Input::get('gapyear') == 1 && Input::get('studyAbroad') == 1) {
+					$validator = Validator::make(
+						array(
+							'firstName' => Input::get('firstName'),
+							'lastName' => Input::get('lastName'),
+							'email' => Input::get('email'),
+							'lockerNumber' => Input::get('lockerNumber'),
+							'countryName' => Input::get('countryName'),
+							'schoolName' => Input::get('schoolName'),
+							'major' => Input::get('major'),
 						),
-					array(
-						'firstName' => 'required|alpha',
-						'lastName' => 'required|alpha',
-						'email' => 'required|email|unique:users',
-						'lockerNumber' => 'required|integer|unique:users,locker',
-						'countryName' => 'required|alpha_spaces',
-						'schoolName' => 'alpha_spaces',
-						'major' => '',
+						array(
+							'firstName' => 'required|alpha',
+							'lastName' => 'required|alpha',
+							'email' => 'required|email|unique:users',
+							'lockerNumber' => 'required|integer|unique:users,locker',
+							'countryName' => 'required|alpha_spaces',
+							'schoolName' => 'required|alpha_spaces',
+							'major' => 'required',
 						)
-					);  			
+					);
+				}
 			}
-			elseif(Input::get('gapyear') == 1 && Input::get('edit') == 1) {			
-				$validator = Validator::make(
-					array(
-						'email' => Input::get('email'),
-						'lockerNumber' => Input::get('lockerNumber'),
-						'countryName' => Input::get('countryName'),
-						'schoolName' => Input::get('schoolName'),
-						'major' => Input::get('major'),
+			else {
+				if(Input::get('gapyear') == 0) {
+					$validator = Validator::make(
+						array(
+							'email' => Input::get('email'),
+							'lockerNumber' => Input::get('lockerNumber'),
+							'schoolName' => Input::get('schoolName'),
+							'major' => Input::get('major'),
 						),
-					array(
-						'email' => 'required|email',
-						'lockerNumber' => 'required|integer',
-						'countryName' => 'required|alpha_spaces',
-						'schoolName' => 'alpha_spaces',
-						'major' => '',
+						array(
+							'email' => 'required|email|unique:users',
+							'lockerNumber' => 'required|integer|unique:users,locker',
+							'schoolName' => 'required|alpha_spaces',
+							'major' => 'required',
 						)
-					);  			
+					);
+				}
+				elseif(Input::get('gapyear') == 1 && Input::get('studyAbroad') == 0) {
+					$validator = Validator::make(
+						array(
+							'email' => Input::get('email'),
+							'lockerNumber' => Input::get('lockerNumber'),
+							'countryName' => Input::get('countryName'),
+							'schoolName' => Input::get('schoolName'),
+							'major' => Input::get('major'),
+						),
+						array(
+							'email' => 'required|email|unique:users',
+							'lockerNumber' => 'required|integer|unique:users,locker',
+							'countryName' => 'required|alpha_spaces',
+							'schoolName' => 'alpha_spaces',
+							'major' => '',
+						)
+					);
+				}
+				elseif(Input::get('gapyear') == 1 && Input::get('studyAbroad') == 1) {
+					$validator = Validator::make(
+						array(
+							'email' => Input::get('email'),
+							'lockerNumber' => Input::get('lockerNumber'),
+							'countryName' => Input::get('countryName'),
+							'schoolName' => Input::get('schoolName'),
+							'major' => Input::get('major'),
+						),
+						array(
+							'email' => 'required|email|unique:users',
+							'lockerNumber' => 'required|integer|unique:users,locker',
+							'countryName' => 'required|alpha_spaces',
+							'schoolName' => 'required|alpha_spaces',
+							'major' => 'required',
+						)
+					);
+				}
 			}
+
 			if ($validator->fails()) {
 				$response = array('status' => 'danger', 'text' => $validator->messages());
 			}

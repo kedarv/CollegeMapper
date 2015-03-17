@@ -13,18 +13,24 @@
 		hr {
 			margin: 7px;
 		}
+		.btn-desktop {
+			width: 80px;
+			text-align: center;
+		}
+		.btn-mobile {
+			width: 50px;
+			text-align: center;
+		}
    </style>
 </head>
 <body>
-	{{link_to_action('PageController@makeMark', 'Add Marker')}}
 	<!-- Mobile Buttons -->
-	<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 20px; right: 10px; z-index: 99;">2014 Panel</a>
-	<a data-toggle="modal" href="/stats" class="btn btn-info btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 55px; right: 10px; z-index: 99;">Class Stats</a>
+	<a data-toggle="modal" href="#myModal" class="btn-mobile btn btn-primary btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 20px; right: 10px; z-index: 99;">Menu</a>
+	<a data-toggle="modal" href="/stats" class="btn-mobile btn btn-info btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 55px; right: 10px; z-index: 99;">Stats</a>
 
 	<!-- Desktop and Tablet Buttons -->
-	<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 20px; right: 10px; z-index: 99;">2014 Panel</a>	
-	<a data-toggle="modal" href="/stats" class="btn btn-info btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 70px; right: 10px; z-index: 99;">Class Stats</a>
-	<a data-toggle="modal" href="http://kedarv.org.uk" class="btn btn-success btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 120px; right: 10px; z-index: 99;">Other Apps</a>
+	<a data-toggle="modal" href="#myModal" class="btn-desktop btn btn-primary btn-lg btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 20px; right: 10px; z-index: 99;">Menu</a>	
+	<a data-toggle="modal" href="/stats" class="btn-desktop btn btn-info btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 70px; right: 10px; z-index: 99;">Stats</a>
 	
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -36,6 +42,7 @@
 	<div class="modal-body">
 			<ul class="nav nav-tabs" id="navTabs">
 				<li class="active"><a href="#welcome" data-toggle="tab">Introduction</a></li>
+				<li><a href="#add" id="add">Add Marker</a></li>
 				<li><a href="#faq" data-toggle="tab">FAQ</a></li>
 			</ul>
 		<div class="tab-content">
@@ -118,13 +125,13 @@
 				animation: google.maps.Animation.DROP,
 				infoWindow: {
 					@if($row['country'] == "" && $row['school'] != "")
-						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}} will attend {{$row['prefix']}} {{$row['school']}}' +
+						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will attend {{$row['prefix']}} {{$row['school']}}' +
 							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['school']}}" data-img="{{$row['image']}}">Show University Info &raquo;</a>'
 					@elseif($row['country'] != "" && $row['school'] == "")
-						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}} will take a gap year in {{$row['country']}}' +
+						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will take a gap year in {{$row['country']}}' +
 							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['country']}}" data-img="{{$row['image']}}">Show Country Info &raquo;</a>'
 					@elseif($row['country'] != "" && $row['school'] != "")
-						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}} will take a gap year in {{$row['country']}}, and then attend {{$row['prefix']}} {{$row['school']}}' +
+						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will take a gap year in {{$row['country']}}, and then attend {{$row['prefix']}} {{$row['school']}}' +
 							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['school']}}" data-img="{{$row['image']}}">Show University Info &raquo;</a>'
 					@endif
 				}
@@ -138,9 +145,8 @@
 			e.preventDefault()
 			$(this).tab('show')
 		});
-		
-		$('.statslink').click(function () {
-		  window.location = "/stats";
+		$('#add').click(function(){
+			window.location.href = "{{action('PageController@makeMark')}}";
 		});
 
 		$(document).on('click', '.uniinfo', function(){ 
