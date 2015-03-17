@@ -124,14 +124,17 @@
 				title: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}} - Click for more Info',
 				animation: google.maps.Animation.DROP,
 				infoWindow: {
-					@if($row['country'] == "" && $row['school'] != "")
+					@if($row['country'] == "")
 						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will attend {{$row['prefix']}} {{$row['school']}}' +
 							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['school']}}" data-img="{{$row['image']}}">Show University Info &raquo;</a>'
 					@elseif($row['country'] != "" && $row['school'] == "")
 						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will take a gap year in {{$row['country']}}' +
 							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['country']}}" data-img="{{$row['image']}}">Show Country Info &raquo;</a>'
-					@elseif($row['country'] != "" && $row['school'] != "")
+					@elseif($row['country'] != "" && $row['school'] != "" && $row['studyabroad'] == 0)
 						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will take a gap year in {{$row['country']}}, and then attend {{$row['prefix']}} {{$row['school']}}' +
+							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['school']}}" data-img="{{$row['image']}}">Show University Info &raquo;</a>'
+					@elseif($row['country'] != "" && $row['school'] != "" && $row['studyabroad'] == 1)
+						content: '{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}. will study abroad in {{$row['country']}}, attending {{$row['prefix']}} {{$row['school']}}' +
 							'<hr/><a href="#infoModal" class="uniinfo" data-id="{{$row['description']}}" data-name="{{$row['school']}}" data-img="{{$row['image']}}">Show University Info &raquo;</a>'
 					@endif
 				}

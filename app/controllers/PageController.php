@@ -2,7 +2,7 @@
 
 class PageController extends BaseController {
 	public function showHome() {
-		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image', 'country', 'prefix'))->toArray();
+		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image', 'country', 'prefix', 'studyabroad'))->toArray();
 		return View::make('home', compact('data'));
 	}
 	public function makeMark() {
@@ -84,7 +84,7 @@ class PageController extends BaseController {
 					);
 				}
 			}
-			else {
+			elseif(Input::get('edit') == 1) {
 				if(Input::get('gapyear') == 0) {
 					$validator = Validator::make(
 						array(
@@ -94,8 +94,8 @@ class PageController extends BaseController {
 							'major' => Input::get('major'),
 						),
 						array(
-							'email' => 'required|email|unique:users',
-							'lockerNumber' => 'required|integer|unique:users,locker',
+							'email' => 'required|email',
+							'lockerNumber' => 'required|integer',
 							'schoolName' => 'required|alpha_spaces',
 							'major' => 'required',
 						)
@@ -111,8 +111,8 @@ class PageController extends BaseController {
 							'major' => Input::get('major'),
 						),
 						array(
-							'email' => 'required|email|unique:users',
-							'lockerNumber' => 'required|integer|unique:users,locker',
+							'email' => 'required|email',
+							'lockerNumber' => 'required|integer',
 							'countryName' => 'required|alpha_spaces',
 							'schoolName' => 'alpha_spaces',
 							'major' => '',
@@ -129,8 +129,8 @@ class PageController extends BaseController {
 							'major' => Input::get('major'),
 						),
 						array(
-							'email' => 'required|email|unique:users',
-							'lockerNumber' => 'required|integer|unique:users,locker',
+							'email' => 'required|email',
+							'lockerNumber' => 'required|integer',
 							'countryName' => 'required|alpha_spaces',
 							'schoolName' => 'required|alpha_spaces',
 							'major' => 'required',
@@ -152,9 +152,16 @@ class PageController extends BaseController {
 						$user->major = Input::get('major');
 						if(Input::get('gapyear') == 1) {
 							$user->country = Input::get('countryName');
+							if(Input::get('studyAbroad') == 1) {
+								$user->studyabroad = 1;
+							}
+							else {
+								$user->studyabroad = 0;
+							}
 						}
 						else {
 							$user->country = NULL;
+							$user->studyabroad = 0;
 						}
 						$user->touch();
 						$user->save();
@@ -176,8 +183,12 @@ class PageController extends BaseController {
 					$user->locker = Input::get('lockerNumber');
 					$user->school = Input::get('schoolName');
 					$user->major = Input::get('major');
+					$user->studyabroad = 0;
 					if(Input::get('gapyear') == 1) {
 						$user->country = Input::get('countryName');
+						if(Input::get('studyAbroad') == 1) {
+							$user->studyabroad = 1;
+						}
 					}
 					$user->save();
 					$response = array('status' => 'success', 'text' => $user->id);
@@ -191,22 +202,45 @@ class PageController extends BaseController {
 		if (Request::ajax()) {
 			$id = Input::get("id");
 			$user = User::find($id);
-			$string = str_replace(" ", "+", $user->school);
+			if($user->country == "") {
+				$string = str_replace(" ", "+", $user->school);
+			}
+			elseif($user->country != "" && $user->school != "") {
+				$string = str_replace(" ", "+", $user->school);
+			}
+			else {
+				$string = str_replace(" ", "+", $user->country);
+			}
 			$geocodeArray = $this->lookup($string);
-			$college = str_replace(" ", "_", $geocodeArray['propername']);
-			$college = str_replace("-", "%E2%80%93", $college);
 			$user->lat = $geocodeArray['lat'];
 			$user->lng = $geocodeArray['lng'];
 			if($user->country == "") {
+				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
+				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
 				$user->state = $geocodeArray['state'];
+				$user->school = $geocodeArray['propername'];
 			}
-			$user->school = $geocodeArray['propername'];
-			$user->description = $this->getWikiDescription($college);
-			$user->image = $this->getWikiImage($college);
+			elseif($user->country != "" && $user->school != "") {
+				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
+				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
+				$user->state = $geocodeArray['state'];
+				$user->school = $geocodeArray['propername'];
+			}
+			else {
+				$wikiString = str_replace(" ", "_", $user->country);
+				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
+			}
+			$user->description = $this->getWikiDescription($wikiString);
+			$user->image = $this->getWikiImage($wikiString);
 			$user->milesfromhome = $this->getDistance($geocodeArray['lat'], $geocodeArray['lng'], 40.101952, -88.227161) * .62137;
-			$arr = explode(' ',trim($geocodeArray['propername']));
-			if (strpos($arr[0], 'University') !== false || strpos($arr[0],'College') !== false) {
-				$user->prefix = "the";
+			if(isset($geocodeArray['propername'])) {
+				$arr = explode(' ',trim($geocodeArray['propername']));
+				if (strpos($arr[0], 'University') !== false || strpos($arr[0],'College') !== false) {
+					$user->prefix = "the";
+				}
+				else {
+					$user->prefix = "";
+				}
 			}
 			$user->save();
 			$response = array('status' => 'success');
@@ -284,27 +318,27 @@ class PageController extends BaseController {
 		curl_close($ch);
 		$latitude = $response['results'][0]['geometry']['location']['lat'];
 		$longitude = $response['results'][0]['geometry']['location']['lng'];
+		$location_array = array();
 		foreach ($response["results"] as $result) {
 			foreach ($result["address_components"] as $address) {
 				if (in_array("administrative_area_level_1", $address["types"])) {
 					$state = $address["long_name"];
+					$location_array["state"] = $state;
 				}
 				if (in_array("country", $address["types"])) {
 					$country = $address["long_name"];
 				}
 				if (in_array("establishment", $address["types"])) {
 					$propername = $address["long_name"];
+					$location_array["propername"] = $propername;
 				}
 			}
 			break;
 		}
-		$location_array = array(
-			"lat" => $latitude,
-			"lng" => $longitude,
-			"state" => $state,
-			"country" => $country,
-			"propername" => $propername,
-		);
+		$location_array["lat"] = $latitude;
+		$location_array["lng"] = $longitude;
+		$location_array["country"] = $country;
+
 		return $location_array;
 	}
 }

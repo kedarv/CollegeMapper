@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration {
 			$table->text('description');
 			$table->text('image');
 			$table->string('prefix');
+			$table->boolean('studyabroad');
 			$table->timestamps();
 			$table->softDeletes();
 		});
