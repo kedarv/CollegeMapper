@@ -13,5 +13,6 @@
 Route::get('/', 'PageController@showHome');
 Route::get('/makemark', 'PageController@makeMark');
 Route::get('/stats', 'PageController@stats');
+Route::get('/advice', 'PageController@showAdvice');
 Route::post('/postmark', 'PageController@postMark', array('before' => 'csrf'));
 Route::post('/processInfo', 'PageController@processInfo', array('before' => 'csrf-ajax'));

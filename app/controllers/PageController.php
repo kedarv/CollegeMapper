@@ -8,6 +8,9 @@ class PageController extends BaseController {
 	public function makeMark() {
 		return View::make('makemark');
 	}
+	public function showAdvice() {
+		return View::make('advice');
+	}
 	public function postMark() {
 		if (Request::ajax()) {
 			/**
