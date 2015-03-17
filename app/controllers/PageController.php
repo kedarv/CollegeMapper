@@ -242,6 +242,17 @@ class PageController extends BaseController {
 					$user->prefix = "";
 				}
 			}
+			if($user->firstrun == 0) {
+				$data = array(
+					"email" => $user->email,
+					"firstname" => $user->firstname,
+					"lastname" => $user->lastname,
+				);
+				Mail::send('email.welcome', compact('data'), function($message) use ($user) {
+					$message->to($user->email, $user->firstname . ' ' . $user->lastname)->subject('Welcome to CollegeMapper');
+				});
+				$user->firstrun = 1;
+			}
 			$user->save();
 			$response = array('status' => 'success');
 		}
@@ -251,8 +262,18 @@ class PageController extends BaseController {
 		return Response::json($response); 
 		exit();
 	}
-
-	# Haversine Formula to find distance between two geographic points
+	public function stats() {
+		$data = "";
+		return View::make('stats', compact('data'));
+	}
+	/**
+	*  Haversine Formula to find distance between two geographic points
+	*  @param double $latitude1 First latitude coordinate
+	*  @param double $longitude1 First longitude coordinate
+	*  @param double $latitude2 Second latitude coordinate
+	*  @param double $longitude2 Second longitude coordinate
+	*  @return double distance between two coordinates in kilometers
+	*/
 	public function getDistance($latitude1, $longitude1, $latitude2, $longitude2) {
 		$earth_radius = 6371;
 		$dLat = deg2rad($latitude2 - $latitude1);

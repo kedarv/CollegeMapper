@@ -26,11 +26,11 @@
 <body>
 	<!-- Mobile Buttons -->
 	<a data-toggle="modal" href="#myModal" class="btn-mobile btn btn-primary btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 20px; right: 10px; z-index: 99;">Menu</a>
-	<a data-toggle="modal" href="/stats" class="btn-mobile btn btn-info btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 55px; right: 10px; z-index: 99;">Stats</a>
+	<a data-toggle="modal" href="{{action('PageController@stats')}}" class="btn-mobile btn btn-info btn-sm hidden-md hidden-lg" style="position: absolute; bottom: 55px; right: 10px; z-index: 99;">Stats</a>
 
 	<!-- Desktop and Tablet Buttons -->
 	<a data-toggle="modal" href="#myModal" class="btn-desktop btn btn-primary btn-lg btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 20px; right: 10px; z-index: 99;">Menu</a>	
-	<a data-toggle="modal" href="/stats" class="btn-desktop btn btn-info btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 70px; right: 10px; z-index: 99;">Stats</a>
+	<a data-toggle="modal" href="{{action('PageController@stats')}}" class="btn-desktop btn btn-info btn-lg hidden-xs hidden-sm" style="position: absolute; bottom: 70px; right: 10px; z-index: 99;">Stats</a>
 	
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">

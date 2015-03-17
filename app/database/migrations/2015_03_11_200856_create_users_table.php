@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration {
 			$table->text('image');
 			$table->string('prefix');
 			$table->boolean('studyabroad');
+			$table->boolean('firstrun')->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});
