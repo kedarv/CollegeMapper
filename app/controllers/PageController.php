@@ -266,8 +266,67 @@ class PageController extends BaseController {
 		exit();
 	}
 	public function stats() {
-		$data = "";
-		return View::make('stats', compact('data'));
+		$query = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'firstname', 'lastname', 'major', 'milesfromhome', 'state', 'country', 'studyabroad'))->toArray();
+		
+		$list = array();
+		$list['states'] = array();
+		$list['colleges'] = array();
+		$list['majors'] = array();
+
+		# Drilldown arrays
+		$list['engineering'] = array();
+		$list['other'] = array();
+		$list['artscience'] = array();
+		$list['businesslaw'] = array();
+		$list['edumed'] = array();
+		
+		# Use a while loop to create arrays with all the info
+		foreach($query as $row) {
+			if($row['state'] != ""){
+				$list['states'][] = $row['state'];
+			}
+			if($row['school'] != "") {
+				$list['colleges'][] = $row['school'];
+			}
+			if($row['major'] != "") {
+				$list['major'][] = $row['major'];		
+			}
+			elseif($row['major'] == "") {
+				$list['major'][] = "Gap Year";
+			}
+
+			if(strpos($row['major'], "Engineering") !== false || strpos($row['major'], "Computer Science") !== false) {
+				$list['engineering'][] = $row['major'];
+			}
+			if(strpos($row['major'], "Undecided") !== false || strpos($row['major'], "General") !== false || strpos($row['major'], "Study Abroad") !== false || strpos($row['major'], "Gap Year") !== false) {
+				if(strpos($row['major'], "Engineering") === false) {
+					$list['other'][] = $row['major'];
+				}
+			}
+			if(strpos($row['major'], "Music Cognition") !== false || strpos($row['major'], "Media") !== false || strpos($row['major'], "Architecture") !== false || strpos($row['major'], "Psychology") !== false || strpos($row['major'], "Agriculture and Consumer Economics") !== false || strpos($row['major'], "Biology") !== false || strpos($row['major'], "Political Science") !== false || strpos($row['major'], "Theatre") !== false || strpos($row['major'], "History") !== false || strpos($row['major'], "English") !== false) {
+				$list['artscience'][] = $row['major'];
+			}
+			if(strpos($row['major'], "Business") !== false || strpos($row['major'], "Law") !== false || strpos($row['major'], "Economics") !== false) {
+				if(strpos($row['major'], "Consumer") === false) {
+					$list['businesslaw'][] = $row['major'];
+				}
+			}
+			if(strpos($row['major'], "Education") !== false || strpos($row['major'], "Medicine") !== false || strpos($row['major'], "Health") !== false) {
+				$list['edumed'][] = $row['major'];
+			}
+		}
+		$counts = array();
+		$counts['states'] = array_count_values($list['states']);
+		$counts['colleges'] = array_count_values($list['colleges']);
+		$counts['majors'] = array_count_values($list['majors']);
+		
+		# Drilldown
+		$counts['engineering'] = array_count_values($list['engineering']);
+		$counts['other'] = array_count_values($list['other']);
+		$counts['artscience'] = array_count_values($list['artscience']);
+		$counts['businesslaw'] = array_count_values($list['businesslaw']);
+		$counts['edumed'] = array_count_values($list['edumed']);
+		return View::make('stats', compact('query', 'list', 'counts'));
 	}
 	/**
 	*  Haversine Formula to find distance between two geographic points
