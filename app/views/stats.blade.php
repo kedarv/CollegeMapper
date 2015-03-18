@@ -20,7 +20,7 @@
 				<th class="tablesorter filter" data-placeholder="Search Name">Name</th>
 				<th class="tablesorter filter" data-placeholder="Search University/College">University/College</th>
 				<th class="tablesorter filter" data-placeholder="Search Major">Major</th>
-				<th class="filter-false" style="width:150px;">Distance from Home</th>
+				<th class="filter-false" style="width:180px;">Distance from Home</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,11 +45,20 @@
 		@endforeach
 		</tbody>
 	</table>
+	<div id="state" style="height: 400px; margin: 0 auto"></div>
+	<hr/>
+	<div id="university" style="height: 500px; margin: 0 auto"></div>
+	<hr/>
+	<div id="majordrilldown" style="height: 400px; margin: 0 auto"></div>
+	<hr/>
+	<div id="major" style="height: 400px; margin: 0 auto"></div>
 </div>
 </div>
 </div>
 </div>
 {{HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
+{{HTML::script('http://code.highcharts.com/highcharts.js')}}
+{{HTML::script('http://code.highcharts.com/modules/drilldown.js')}}
 {{HTML::script('js/tablesorter.min.js')}}
 {{HTML::script('js/tablesorter.widgets.min.js')}}
 <script>
@@ -71,5 +80,313 @@ $(document).ready(function(){
 	}); 
 }); 
 </script>
+		<script type="text/javascript">
+		$(function () {
+			$('#state').highcharts({
+				chart: {
+					plotBackgroundColor: null,
+					plotBorderWidth: null,
+					plotShadow: false
+				},
+				title: {
+					text: 'Most Popular States'
+				},
+				tooltip: {
+					pointFormat: 'Number of People: <b>{point.y}</b>'
+				},
+				plotOptions: {
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+							enabled: true,
+							color: '#000000',
+							connectorColor: '#000000',
+							format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+						}
+					}
+				},
+				series: [{
+					type: 'pie',
+					name: 'Percent',
+					data: [
+						@foreach ($counts['states'] as $key => $value)
+							['{{$key}}', {{$value}}],
+						@endforeach
+					
+					]
+				}],
+				credits: {
+					text: 'Kedar Vaidya',
+					href: 'http://www.kedarv.org.uk'
+				}
+			});
+		});
+	$(function () {
+        $('#university').highcharts({
+            chart: {
+                type: 'column',
+                margin: [ 50, 50, 100, 80]
+            },
+            title: {
+                text: 'Most Popular Universities'
+            },
+            xAxis: {
+                categories: [
+					@foreach ($counts['colleges'] as $key =>$value)
+						@if($value > 1)
+							'{{$key}}',
+						@endif
+					@endforeach
+                ],
+                labels: {
+                    rotation: 0,
+                    align: 'center',
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+				allowDecimals: false,
+                title: {
+                    text: 'Number of People'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: [{
+                name: 'Number of People',
+                data: [
+					@foreach ($counts['colleges'] as $key =>$value)
+						@if($value > 1)
+							{{$value}}, 
+						@endif
+					@endforeach
+				],
+                dataLabels: {
+                    enabled: true,
+                    rotation: 0,
+                    color: '#FFFFFF',
+                    align: 'center',
+                    x: 4,
+                    y: 20,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }],
+			credits: {
+				text: 'Kedar Vaidya',
+				href: 'http://www.kedarv.org.uk'
+			}
+        });
+    });
+	$(function () {
+		$('#major').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false
+			},
+			title: {
+				text: 'Individual Majors'
+			},
+			tooltip: {
+				pointFormat: 'Number of People: <b>{point.y}</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						color: '#000000',
+						connectorColor: '#000000',
+						format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+					}
+				}
+			},
+			series: [{
+				type: 'pie',
+				name: 'Percent',
+				data: [
+					@foreach ($counts['majors'] as $key => $value)
+						 ['{{$key}}', {{$value}}], 
+					@endforeach
+				]
+			}],
+			credits: {
+				text: 'Kedar Vaidya',
+				href: 'http://www.kedarv.org.uk'
+			}
+			});
+		});
+		
+	$(function () {    
+		$('#majordrilldown').highcharts({
+			chart: {
+				type: 'pie'
+			},
+			title: {
+				text: 'Major Groups (click section to expand)'
+			},
+			xAxis: {
+				type: 'category'
+			},
+
+			legend: {
+				enabled: false
+			},
+
+			plotOptions: {
+				series: {
+					borderWidth: 0,
+					dataLabels: {
+						enabled: true,
+					}
+				},
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						color: '#000000',
+						format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+					}
+				}
+			},
+
+			series: [{
+				name: 'Majors',
+				colorByPoint: true,
+				data: [
+				@if(count($counts['engineering']) > 0)
+				{
+					name: 'Engineering',
+					y: {{count($counts['engineering'])}},
+					drilldown: 'engineering'
+				},
+				@endif
+				@if(count($counts['artscience']) > 0)
+				{
+					name: 'Arts and Sciences',
+					y: {{count($counts['artscience'])}},
+					drilldown: 'artscience'
+				},
+				@endif
+				@if(count($counts['engineering']) > 0)
+				{
+					name: 'Business and Law',
+					y: {{count($counts['engineering'])}},
+					drilldown: 'buslaw'
+				},
+				@endif
+				@if(count($counts['edumed']) > 0)
+				{
+					name: 'Education and Medicine',
+					y: {{count($counts['edumed'])}},
+					drilldown: 'edumed'
+				},
+				@endif
+				@if(count($counts['other']) > 0)
+				{
+					name: 'Other',
+					y: {{count($counts['other'])}},
+					drilldown: 'other'
+				}
+				@endif
+				],
+				tooltip: {
+						pointFormat: 'Number of People: <b>{point.y}</b>'
+				},
+			}],
+			drilldown: {
+				series: [
+				@if(count($counts['engineering']) > 0)
+				{
+					id: 'engineering',
+					data: [
+						@foreach ($counts['engineering'] as $key => $value)
+							['{{ucfirst($key)}}', {{$value}}],
+						@endforeach
+					],
+					name: 'Engineering',
+					tooltip: {
+						pointFormat: 'Number of People: <b>{point.y}</b>'
+					},
+				},
+				@endif
+				@if(count($counts['artscience']) > 0)
+				{
+					id: 'artscience',
+					data: [
+						@foreach ($counts['artscience'] as $key => $value)
+							['{{ucfirst($key)}}', {{$value}}], 
+						@endforeach
+					],
+					name: 'Arts and Sciences',
+					tooltip: {
+						pointFormat: 'Number of People: <b>{point.y}</b>'
+					},
+				},
+				@endif
+				@if(count($counts['businesslaw']) > 0)
+				{
+					id: 'buslaw',
+					data: [
+						@foreach ($counts['businesslaw'] as $key => $value)
+							['{{ucfirst($key)}}', {{$value}}], 
+						@endforeach
+					],
+					name: 'Business and Law',
+					tooltip: {
+						pointFormat: 'Number of People: <b>{point.y}</b>'
+					},
+				},
+				@endif
+				@if(count($counts['edumed']) > 0)
+				{
+					id: 'edumed',
+					data: [
+						@foreach ($counts['edumed'] as $key => $value)
+							['{{ucfirst($key)}}', {{$value}}], 
+						@endforeach
+					],
+					name: 'Education and Medicine',
+					tooltip: {
+						pointFormat: 'Number of People: <b>{point.y}</b>'
+					},
+				},
+				@endif
+				@if(count($counts['other']) > 0)
+				{
+					id: 'other',
+					data: [
+						@foreach ($counts['other'] as $key => $value) {
+							$key = ucfirst($key);
+							['{{ucfirst($key)}}', {{$value}}], 
+						@endforeach
+					],
+					name: 'Other',
+					tooltip: {
+						pointFormat: 'Number of People: <b>{point.y}</b>'
+					},
+				}
+				@endif	
+				]
+			},
+			credits: {
+				text: 'Kedar Vaidya',
+				href: 'http://www.kedarv.org.uk'
+			}
+		})
+	});
+	</script>
 </body>
 </html>

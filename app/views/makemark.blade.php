@@ -115,7 +115,14 @@
 			</div>
 		</div>
 		<hr/>
-		<a href="http://github.com/kedarv">@kedarv</a>
+		<div class="col-md-6">
+			<a href="http://github.com/kedarv">@kedarv</a>
+		</div>
+		<div class="col-md-6">
+			<span class="pull-right">
+				<a href="{{action('PageController@showHome')}}">Back to Map</a>
+			</span>
+		</div>
 		<br/>
 		<br/>
 	</div>
