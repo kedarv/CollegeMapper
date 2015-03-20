@@ -214,9 +214,10 @@ class PageController extends BaseController {
 			else {
 				$string = str_replace(" ", "+", $user->country);
 			}
+			$add = (mt_rand(0, 10))/600;
 			$geocodeArray = $this->lookup($string);
-			$user->lat = $geocodeArray['lat'];
-			$user->lng = $geocodeArray['lng'];
+			$user->lat = $geocodeArray['lat'] + $add;
+			$user->lng = $geocodeArray['lng'] + $add;
 			if($user->country == "") {
 				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
 				$wikiString = str_replace("-", "%E2%80%93", $wikiString);

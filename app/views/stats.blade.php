@@ -280,7 +280,7 @@ $(document).ready(function(){
 					drilldown: 'artscience'
 				},
 				@endif
-				@if(count($counts['engineering']) > 0)
+				@if(count($counts['businesslaw']) > 0)
 				{
 					name: 'Business and Law',
 					y: {{count($counts['engineering'])}},

@@ -8,7 +8,7 @@
 	<title>CollegeMapper</title>
 	{{ HTML::style('css/bootstrap.min.css')}}
 	{{ HTML::style('css/style.css')}}
-	{{ HTML::style('css/sweet-alert.css')}}	
+	{{ HTML::style('css/sweet-alert.css')}}
 </head>
 <body>
 	<div class="barloader">
@@ -96,8 +96,55 @@
 							<div class="col-xs-12">
 								<div class="form-group">
 									{{Form::label('major', 'Major')}}
-									{{Form::text('major', null, array('class' => 'form-control', 'placeholder' => 'Major'))}}
-								</div>
+<label for="major">Major</label>
+						<select class="form-control" id="major" name="major">
+						  <option value="Undecided">Undecided</option>
+						  <optgroup label="Engineering">
+							<option value="General Engineering">General Engineering</option>
+							<option value="Chemical/Bio Engineering">Chemical/Bio Engineering</option>
+							<option value="Biomedical Engineering">Biomedical Engineering</option>
+							<option value="Civil Engineering">Civil Engineering</option>
+							<option value="Environmental Engineering">Environmental Engineering</option>
+							<option value="Electrical/Computer Engineering">Electrical/Computer Engineering</option>
+							<option value="Computer Science">Computer Science</option>
+							<option value="Mechanical Engineering">Mechanical Engineering</option>
+							<option value="Aerospace Engineering">Aerospace Engineering</option>
+							<option value="General/Undecided Engineering">General/Undecided Engineering</option>
+						  </optgroup>
+						  <optgroup label="Arts and Sciences">
+							<option value="Biology">Biology</option>
+							<option value="Chemistry">Chemistry</option>
+							<option value="Biochemistry">Biochemistry</option>
+							<option value="Communication">Communication</option>
+							<option value="Foreign Language">Foreign Language</option>
+							<option value="Anthropology">Anthropology</option>
+							<option value="Psychology">Psychology</option>
+							<option value="Sociology">Sociology</option>
+							<option value="Political Science">Political Science</option>
+							<option value="Architecture">Architecture</option>
+							<option value="Agriculture and Consumer Economics">Agriculture and Consumer Economics</option>
+							<option value="English">English</option>
+							<option value="History">History</option>
+							<option value="Music">Music</option>
+							<option value="Music Cognition">Music Cognition</option>
+							<option value="Theatre">Theatre</option>
+						  </optgroup>
+						  <optgroup label="Business">
+							<option value="Business">Business</option>
+							<option value="International Business">International Business</option>
+							<option value="Economics">Economics</option>
+						  </optgroup>
+						  <optgroup label="No Category">
+						  <option value="Education">Education</option>
+						  <option value="Law">Law</option>
+						  <option value="Media">Media</option>
+						  <option value="Medicine">Medicine</option>
+						  <option value="Public Health">Public Health</option>
+						  <option value="General">General/Other</option>
+						  <option value="Gap Year">Gap Year</option>
+						  <option value="Study Abroad">Study Abroad</option>
+						  </optgroup>
+						</select>								</div>
 							</div>
 						</div>
 						<hr/>
@@ -127,9 +174,11 @@
 		<br/>
 	</div>
 	{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
-	{{ HTML::script('js/sweet-alert.min.js')}}	
+	{{ HTML::script('js/sweet-alert.min.js')}}
+	{{ HTML::script('js/chosen.jquery.min.js')}}
 	<script>
 		$(document).ready(function() {
+			$("#major").chosen()
 			$('form').submit(function(e){
 				e.preventDefault();
 				var $form = $( this ),
