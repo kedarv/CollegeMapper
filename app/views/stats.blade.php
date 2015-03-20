@@ -7,12 +7,25 @@
 	<title>CollegeMapper  |  Stats</title>
 	{{ HTML::style('css/bootstrap.min.css')}}
 	{{HTML::style('css/stats.css')}}
+	<style>
+	body {
+		background: url(http://static.simpledesktops.com/uploads/desktops/2015/02/08/Bubbly-2880.png);
+		background-size: cover;
+		margin-top: 50px;
+	}
+	.jumbotron {
+		padding: 15px;
+		background: #F5F5F5;
+		font-weight:200;
+	}
+	</style>
 </head>
 <body>
 <div class="container">
 <div class="row">
 <div class="col-md-12">
-
+<div class="jumbotron">
+<h1 style="text-align:center;margin-top:0px;">Uni High Class of 2015</h1>
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped tablesorter" id="table">
 		<thead>
@@ -40,11 +53,18 @@
 					<td>{{$row['school']}}</td>
 					<td>{{$row['major']}}</td>				
 				@endif
+				@if($row['milesfromhome'] < 5)
+				<td><span class="dist hidden">0</span><img src="http://upload.wikimedia.org/wikipedia/en/thumb/3/3a/UIUC_I_mark.svg/18px-UIUC_I_mark.svg.png" class="img-responsive" alt="UofI"></td>
+				@elseif($row['school'] == "Purdue University")
+				<td><span class="dist">{{$row['milesfromhome']}}</span>{{ HTML::image("img/purdue.png", "Purdue", array('class' => 'img-responsive', 'style' => 'float:right')) }}</td>
+				@else
 				<td><span class="dist">{{$row['milesfromhome']}}</span> Miles</td>
+				@endif
 			</tr>
 		@endforeach
 		</tbody>
 	</table>
+	<hr/>
 	<div id="state" style="height: 400px; margin: 0 auto"></div>
 	<hr/>
 	<div id="university" style="height: 500px; margin: 0 auto"></div>
@@ -52,6 +72,7 @@
 	<div id="majordrilldown" style="height: 400px; margin: 0 auto"></div>
 	<hr/>
 	<div id="major" style="height: 400px; margin: 0 auto"></div>
+</div>
 </div>
 </div>
 </div>
