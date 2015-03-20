@@ -1,3 +1,10 @@
+.visible_link {
+	color: #fff;
+}
+.visible_link:hover, .visible_link:focus {
+  color: #cecece;
+  text-decoration: underline;
+}
 /*************
   Bootstrap theme
  *************/

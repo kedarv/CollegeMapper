@@ -13,6 +13,15 @@
 	h1 {
 		margin-top:0px;
 	}
+	.blur {
+		color: transparent;
+  		text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  		 transition: all 0.2s linear;
+	}
+	.blur:hover {
+		text-shadow:none;
+		color: #333;
+	}
 	</style>
 </head>
 <body>
@@ -51,6 +60,11 @@
 				<div class="col-md-6">
 					<blockquote>
 						Network. Get to know people. Get to know professors. But try not to force it. Do the things you love and it will come naturally 
+					</blockquote>
+				</div>
+				<div class="col-md-6">
+					<blockquote>
+						You will quickly start to not give a <span class="blur">shit</span> about every aspect of your high school career. College is just more awesome. Don't try to hard to make high school memories.
 					</blockquote>
 				</div>
 			</div>

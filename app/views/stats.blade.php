@@ -9,8 +9,7 @@
 	{{HTML::style('css/stats.css')}}
 	<style>
 	body {
-		background: url(http://static.simpledesktops.com/uploads/desktops/2015/02/08/Bubbly-2880.png);
-		background-size: cover;
+		background: url({{asset('img/footer_lodyas.png')}});
 		margin-top: 50px;
 	}
 	.jumbotron {
@@ -26,6 +25,8 @@
 <div class="col-md-12">
 <div class="jumbotron">
 <h1 style="text-align:center;margin-top:0px;">Uni High Class of 2015</h1>
+<h4 style="text-align:center;margin-top:0px;"><a href="{{action('PageController@showAdvice')}}">Advice from the Class of 2014 &raquo;</a></h4>
+
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped tablesorter" id="table">
 		<thead>
@@ -72,10 +73,22 @@
 	<div id="majordrilldown" style="height: 400px; margin: 0 auto"></div>
 	<hr/>
 	<div id="major" style="height: 400px; margin: 0 auto"></div>
+	<br/>
 </div>
 </div>
 </div>
+<div class="col-md-6">
+	<a href="http://github.com/kedarv" class="visible_link">@kedarv</a>
 </div>
+<div class="col-md-6">
+	<span class="pull-right">
+		<a href="{{action('PageController@showHome')}}" class="visible_link">Map  |</a>
+		<a href="{{action('PageController@showAdvice')}}" class="visible_link">  Advice from '14</a>
+	</span>
+</div>
+</div>
+<br/>
+<br/>
 </div>
 {{HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')}}
 {{HTML::script('http://code.highcharts.com/highcharts.js')}}
