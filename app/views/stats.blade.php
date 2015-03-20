@@ -39,7 +39,7 @@
 		<tbody>
 		@foreach($query as $row)
 			<tr>
-				<td>{{$row['firstname']}}</td>
+				<td>{{$row['firstname']}} {{substr($row['lastname'], 0, 1)}}.</td>
 				@if($row['country'] != "" && $row['studyabroad'] == 0 && $row['school'] == "")
 					<td>Gap year ({{$row['country']}})</td>
 					<td>-</td>
@@ -50,7 +50,7 @@
 					<td>Studying abroad ({{$row['country']}}) at {{$row['school']}}</td>
 					<td>{{$row['major']}}</td>
 				@else
-					<td>{{$row['school']}}</td>
+					<td><a href="http://en.wikipedia.org/wiki/{{str_replace(" ", "_", $row['school'])}}">{{$row['school']}}</a></td>
 					<td>{{$row['major']}}</td>				
 				@endif
 				@if($row['milesfromhome'] < 5)
