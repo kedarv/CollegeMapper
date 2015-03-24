@@ -34,7 +34,7 @@ class PageController extends BaseController {
 						),
 						array(
 							'firstName' => 'required|alpha',
-							'lastName' => 'required|alpha',
+							'lastName' => 'required|alpha_dash',
 							'email' => 'required|email|unique:users',
 							'lockerNumber' => 'required|integer|unique:users,locker',
 							'schoolName' => 'required|alpha_spaces',
@@ -55,7 +55,7 @@ class PageController extends BaseController {
 						),
 						array(
 							'firstName' => 'required|alpha',
-							'lastName' => 'required|alpha',
+							'lastName' => 'required|alpha_dash',
 							'email' => 'required|email|unique:users',
 							'lockerNumber' => 'required|integer|unique:users,locker',
 							'countryName' => 'required|alpha_spaces',
@@ -77,7 +77,7 @@ class PageController extends BaseController {
 						),
 						array(
 							'firstName' => 'required|alpha',
-							'lastName' => 'required|alpha',
+							'lastName' => 'required|alpha_dash',
 							'email' => 'required|email|unique:users',
 							'lockerNumber' => 'required|integer|unique:users,locker',
 							'countryName' => 'required|alpha_spaces',
@@ -304,7 +304,7 @@ class PageController extends BaseController {
 					$list['other'][] = $row['major'];
 				}
 			}
-			if(strpos($row['major'], "Art") !== false || strpos($row['major'], "Music Cognition") !== false || strpos($row['major'], "Media") !== false || strpos($row['major'], "Architecture") !== false || strpos($row['major'], "Psychology") !== false || strpos($row['major'], "Agriculture and Consumer Economics") !== false || strpos($row['major'], "Biology") !== false || strpos($row['major'], "Political Science") !== false || strpos($row['major'], "Theatre") !== false || strpos($row['major'], "History") !== false || strpos($row['major'], "English") !== false) {
+			if(strpos($row['major'], "Kinesiology") !== false || strpos($row['major'], "Art") !== false || strpos($row['major'], "Music Cognition") !== false || strpos($row['major'], "Media") !== false || strpos($row['major'], "Architecture") !== false || strpos($row['major'], "Psychology") !== false || strpos($row['major'], "Agriculture and Consumer Economics") !== false || strpos($row['major'], "Biology") !== false || strpos($row['major'], "Political Science") !== false || strpos($row['major'], "Theatre") !== false || strpos($row['major'], "History") !== false || strpos($row['major'], "English") !== false) {
 				$list['artscience'][] = $row['major'];
 			}
 			if(strpos($row['major'], "Business") !== false || strpos($row['major'], "Law") !== false || strpos($row['major'], "Economics") !== false) {

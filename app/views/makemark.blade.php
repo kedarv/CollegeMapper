@@ -96,7 +96,6 @@
 							<div class="col-xs-12">
 								<div class="form-group">
 									{{Form::label('major', 'Major')}}
-<label for="major">Major</label>
 						<select class="form-control" id="major" name="major">
 						  <option value="Undecided">Undecided</option>
 						  <optgroup label="Engineering">
@@ -112,6 +111,7 @@
 							<option value="General/Undecided Engineering">General/Undecided Engineering</option>
 						  </optgroup>
 						  <optgroup label="Arts and Sciences">
+							<option value="Kinesiology">Kinesiology</option>
 							<option value="Biology">Biology</option>
 							<option value="Chemistry">Chemistry</option>
 							<option value="Biochemistry">Biochemistry</option>
