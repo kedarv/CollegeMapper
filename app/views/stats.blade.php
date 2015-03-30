@@ -300,38 +300,38 @@ $(document).ready(function(){
 				name: 'Majors',
 				colorByPoint: true,
 				data: [
-				@if(count($counts['engineering']) > 0)
+				@if(count($list['engineering']) > 0)
 				{
 					name: 'Engineering',
-					y: {{count($counts['engineering'])}},
+					y: {{count($list['engineering'])}},
 					drilldown: 'engineering'
 				},
 				@endif
-				@if(count($counts['artscience']) > 0)
+				@if(count($list['artscience']) > 0)
 				{
 					name: 'Arts and Sciences',
-					y: {{count($counts['artscience'])}},
+					y: {{count($list['artscience'])}},
 					drilldown: 'artscience'
 				},
 				@endif
-				@if(count($counts['businesslaw']) > 0)
+				@if(count($list['businesslaw']) > 0)
 				{
 					name: 'Business and Law',
-					y: {{count($counts['engineering'])}},
+					y: {{count($list['businesslaw'])}},
 					drilldown: 'buslaw'
 				},
 				@endif
-				@if(count($counts['edumed']) > 0)
+				@if(count($list['edumed']) > 0)
 				{
 					name: 'Education and Medicine',
-					y: {{count($counts['edumed'])}},
+					y: {{count($list['edumed'])}},
 					drilldown: 'edumed'
 				},
 				@endif
-				@if(count($counts['other']) > 0)
+				@if(count($list['other']) > 0)
 				{
 					name: 'Other',
-					y: {{count($counts['other'])}},
+					y: {{count($list['other'])}},
 					drilldown: 'other'
 				}
 				@endif
@@ -342,7 +342,7 @@ $(document).ready(function(){
 			}],
 			drilldown: {
 				series: [
-				@if(count($counts['engineering']) > 0)
+				@if(count($list['engineering']) > 0)
 				{
 					id: 'engineering',
 					data: [
@@ -356,7 +356,7 @@ $(document).ready(function(){
 					},
 				},
 				@endif
-				@if(count($counts['artscience']) > 0)
+				@if(count($list['artscience']) > 0)
 				{
 					id: 'artscience',
 					data: [
@@ -370,7 +370,7 @@ $(document).ready(function(){
 					},
 				},
 				@endif
-				@if(count($counts['businesslaw']) > 0)
+				@if(count($list['businesslaw']) > 0)
 				{
 					id: 'buslaw',
 					data: [
@@ -384,7 +384,7 @@ $(document).ready(function(){
 					},
 				},
 				@endif
-				@if(count($counts['edumed']) > 0)
+				@if(count($list['edumed']) > 0)
 				{
 					id: 'edumed',
 					data: [
@@ -398,7 +398,7 @@ $(document).ready(function(){
 					},
 				},
 				@endif
-				@if(count($counts['other']) > 0)
+				@if(count($list['other']) > 0)
 				{
 					id: 'other',
 					data: [
