@@ -1,5 +1,5 @@
 # CollegeMapper
-Welcome to 2014Maps. This application was built to visualize where senior year students in high school will attend college. This application is the more mature and abstracted version of 2014Maps. The main advantage of CollegeMapper over 2014Maps is the use of a modern MVC framework (Laravel 4.2). This allows for the use of abstracted database queries, efficient view rendering, and simple routing.
+Welcome to CollegeMapper. This application was built to visualize where senior year students in high school will attend college. This application is the more mature and abstracted version of 2014Maps. The main advantage of CollegeMapper over 2014Maps is the use of a modern MVC framework (Laravel 4.2). This allows for the use of abstracted database queries, efficient view rendering, and simple routing.
 
 # Installation
 ### Download
