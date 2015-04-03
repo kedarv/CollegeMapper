@@ -111,6 +111,8 @@
 							<option value="General/Undecided Engineering">General/Undecided Engineering</option>
 						  </optgroup>
 						  <optgroup label="Arts and Sciences">
+						  	<option value="Child Psychology">Child Psychology</option>
+						  	<option value="Linguistics">Linguistics</option>
 							<option value="Kinesiology">Kinesiology</option>
 							<option value="Biology">Biology</option>
 							<option value="Chemistry">Chemistry</option>
