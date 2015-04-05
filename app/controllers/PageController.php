@@ -40,6 +40,7 @@ class PageController extends BaseController {
 							'lockerNumber' => 'required|integer|unique:users,locker',
 							'schoolName' => 'required|alpha_spaces',
 							'major' => 'required',
+							'second_major' => '',
 						)
 					);
 				}
@@ -63,6 +64,7 @@ class PageController extends BaseController {
 							'countryName' => 'required|alpha_spaces',
 							'schoolName' => 'alpha_spaces',
 							'major' => '',
+							'second_major' => '',
 						)
 					);
 				}
@@ -86,6 +88,7 @@ class PageController extends BaseController {
 							'countryName' => 'required|alpha_spaces',
 							'schoolName' => 'required|alpha_spaces',
 							'major' => 'required',
+							'second_major' => '',
 						)
 					);
 				}
@@ -105,6 +108,7 @@ class PageController extends BaseController {
 							'lockerNumber' => 'required|integer',
 							'schoolName' => 'required|alpha_spaces',
 							'major' => 'required',
+							'second_major' => '',
 						)
 					);
 				}
@@ -158,7 +162,12 @@ class PageController extends BaseController {
     					// Update user
 						$user = User::where('email', '=', Input::get('email'))->where('locker', '=', Input::get('lockerNumber'))->first();
 						$user->school = Input::get('schoolName');
-						$user->major = Input::get('major');
+						if(Input::get('second_major') !== NULL) {
+							$user->major = Input::get('major') . "#" . Input::get('second_major');
+						}
+						else {
+							$user->major = Input::get('major');
+						}
 						if(Input::get('gapyear') == 1) {
 							$user->country = Input::get('countryName');
 							if(Input::get('studyAbroad') == 1) {
@@ -191,7 +200,7 @@ class PageController extends BaseController {
 					$user->lastname = Input::get('lastName');
 					$user->locker = Input::get('lockerNumber');
 					$user->school = Input::get('schoolName');
-					if(Input::get('second_major') != "") {
+					if(Input::get('second_major') !== NULL) {
 						$user->major = Input::get('major') . "#" . Input::get('second_major');
 					}
 					else {
