@@ -153,6 +153,7 @@
 								<div class="form-group">
 									{{Form::label('second_major', 'Second Major')}}
 										<select class="form-control" id="second_major" name="second_major">
+											<option disabled selected>Select Second Major</option>
 											<option value="Undecided">Undecided</option>
 											<optgroup label="Engineering">
 												<option value="General Engineering">General Engineering</option>
