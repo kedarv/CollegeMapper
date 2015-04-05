@@ -95,59 +95,116 @@
 							</div>
 							<div class="col-xs-12">
 								<div class="form-group">
-									{{Form::label('major', 'Major')}}
-						<select class="form-control" id="major" name="major">
-						  <option value="Undecided">Undecided</option>
-						  <optgroup label="Engineering">
-							<option value="General Engineering">General Engineering</option>
-							<option value="Chemical/Bio Engineering">Chemical/Bio Engineering</option>
-							<option value="Biomedical Engineering">Biomedical Engineering</option>
-							<option value="Civil Engineering">Civil Engineering</option>
-							<option value="Environmental Engineering">Environmental Engineering</option>
-							<option value="Electrical/Computer Engineering">Electrical/Computer Engineering</option>
-							<option value="Computer Science">Computer Science</option>
-							<option value="Mechanical Engineering">Mechanical Engineering</option>
-							<option value="Aerospace Engineering">Aerospace Engineering</option>
-							<option value="General/Undecided Engineering">General/Undecided Engineering</option>
-						  </optgroup>
-						  <optgroup label="Arts and Sciences">
-						  	<option value="Child Psychology">Child Psychology</option>
-						  	<option value="Linguistics">Linguistics</option>
-							<option value="Kinesiology">Kinesiology</option>
-							<option value="Biology">Biology</option>
-							<option value="Chemistry">Chemistry</option>
-							<option value="Biochemistry">Biochemistry</option>
-							<option value="Communication">Communication</option>
-							<option value="Foreign Language">Foreign Language</option>
-							<option value="Anthropology">Anthropology</option>
-							<option value="Psychology">Psychology</option>
-							<option value="Sociology">Sociology</option>
-							<option value="Political Science">Political Science</option>
-							<option value="Architecture">Architecture</option>
-							<option value="Agriculture and Consumer Economics">Agriculture and Consumer Economics</option>
-							<option value="English">English</option>
-							<option value="History">History</option>
-							<option value="Music">Music</option>
-							<option value="Music Cognition">Music Cognition</option>
-							<option value="Theatre">Theatre</option>
-						  </optgroup>
-						  <optgroup label="Business">
-							<option value="Business">Business</option>
-							<option value="International Business">International Business</option>
-							<option value="Economics">Economics</option>
-						  </optgroup>
-						  <optgroup label="No Category">
-						  <option value="Education">Education</option>
-						  <option value="Law">Law</option>
-						  <option value="Media">Media</option>
-						  <option value="Medicine">Medicine</option>
-						  <option value="Public Health">Public Health</option>
-						  <option value="General">General/Other</option>
-						  <option value="Gap Year">Gap Year</option>
-						  <option value="Study Abroad">Study Abroad</option>
-						  </optgroup>
-						</select>								</div>
+									{{Form::label('major', 'Major')}} <a href="#" id="double_major_toggle">&nbsp;Enter Double Major &raquo;</a>
+										<select class="form-control" id="major" name="major">
+											<option value="Undecided">Undecided</option>
+											<optgroup label="Engineering">
+												<option value="General Engineering">General Engineering</option>
+												<option value="Chemical/Bio Engineering">Chemical/Bio Engineering</option>
+												<option value="Biomedical Engineering">Biomedical Engineering</option>
+												<option value="Civil Engineering">Civil Engineering</option>
+												<option value="Environmental Engineering">Environmental Engineering</option>
+												<option value="Electrical/Computer Engineering">Electrical/Computer Engineering</option>
+												<option value="Computer Science">Computer Science</option>
+												<option value="Mechanical Engineering">Mechanical Engineering</option>
+												<option value="Aerospace Engineering">Aerospace Engineering</option>
+												<option value="General/Undecided Engineering">General/Undecided Engineering</option>
+											</optgroup>
+											<optgroup label="Arts and Sciences">
+											  	<option value="Child Psychology">Child Psychology</option>
+											  	<option value="Linguistics">Linguistics</option>
+												<option value="Kinesiology">Kinesiology</option>
+												<option value="Biology">Biology</option>
+												<option value="Chemistry">Chemistry</option>
+												<option value="Biochemistry">Biochemistry</option>
+												<option value="Communication">Communication</option>
+												<option value="Foreign Language">Foreign Language</option>
+												<option value="Anthropology">Anthropology</option>
+												<option value="Psychology">Psychology</option>
+												<option value="Sociology">Sociology</option>
+												<option value="Political Science">Political Science</option>
+												<option value="Architecture">Architecture</option>
+												<option value="Agriculture and Consumer Economics">Agriculture and Consumer Economics</option>
+												<option value="English">English</option>
+												<option value="History">History</option>
+												<option value="Music">Music</option>
+												<option value="Music Cognition">Music Cognition</option>
+												<option value="Theatre">Theatre</option>
+											</optgroup>
+											<optgroup label="Business">
+												<option value="Business">Business</option>
+												<option value="International Business">International Business</option>
+												<option value="Economics">Economics</option>
+											</optgroup>
+											<optgroup label="No Category">
+												<option value="Education">Education</option>
+												<option value="Law">Law</option>
+												<option value="Media">Media</option>
+												<option value="Medicine">Medicine</option>
+												<option value="Public Health">Public Health</option>
+												<option value="General">General/Other</option>
+												<option value="Gap Year">Gap Year</option>
+												<option value="Study Abroad">Study Abroad</option>
+											</optgroup>
+									</select>
+								</div>
 							</div>
+							<div class="col-xs-12" id="double_major_container" style="display:none;">
+								<div class="form-group">
+									{{Form::label('second_major', 'Second Major')}}
+										<select class="form-control" id="second_major" name="second_major">
+											<option value="Undecided">Undecided</option>
+											<optgroup label="Engineering">
+												<option value="General Engineering">General Engineering</option>
+												<option value="Chemical/Bio Engineering">Chemical/Bio Engineering</option>
+												<option value="Biomedical Engineering">Biomedical Engineering</option>
+												<option value="Civil Engineering">Civil Engineering</option>
+												<option value="Environmental Engineering">Environmental Engineering</option>
+												<option value="Electrical/Computer Engineering">Electrical/Computer Engineering</option>
+												<option value="Computer Science">Computer Science</option>
+												<option value="Mechanical Engineering">Mechanical Engineering</option>
+												<option value="Aerospace Engineering">Aerospace Engineering</option>
+												<option value="General/Undecided Engineering">General/Undecided Engineering</option>
+											</optgroup>
+											<optgroup label="Arts and Sciences">
+											  	<option value="Child Psychology">Child Psychology</option>
+											  	<option value="Linguistics">Linguistics</option>
+												<option value="Kinesiology">Kinesiology</option>
+												<option value="Biology">Biology</option>
+												<option value="Chemistry">Chemistry</option>
+												<option value="Biochemistry">Biochemistry</option>
+												<option value="Communication">Communication</option>
+												<option value="Foreign Language">Foreign Language</option>
+												<option value="Anthropology">Anthropology</option>
+												<option value="Psychology">Psychology</option>
+												<option value="Sociology">Sociology</option>
+												<option value="Political Science">Political Science</option>
+												<option value="Architecture">Architecture</option>
+												<option value="Agriculture and Consumer Economics">Agriculture and Consumer Economics</option>
+												<option value="English">English</option>
+												<option value="History">History</option>
+												<option value="Music">Music</option>
+												<option value="Music Cognition">Music Cognition</option>
+												<option value="Theatre">Theatre</option>
+											</optgroup>
+											<optgroup label="Business">
+												<option value="Business">Business</option>
+												<option value="International Business">International Business</option>
+												<option value="Economics">Economics</option>
+											</optgroup>
+											<optgroup label="No Category">
+												<option value="Education">Education</option>
+												<option value="Law">Law</option>
+												<option value="Media">Media</option>
+												<option value="Medicine">Medicine</option>
+												<option value="Public Health">Public Health</option>
+												<option value="General">General/Other</option>
+												<option value="Gap Year">Gap Year</option>
+												<option value="Study Abroad">Study Abroad</option>
+											</optgroup>
+									</select>
+								</div>
+							</div>							
 						</div>
 						<hr/>
 					</div>
@@ -180,7 +237,7 @@
 	{{ HTML::script('js/chosen.jquery.min.js')}}
 	<script>
 		$(document).ready(function() {
-			$("#major").chosen()
+			$("#major").chosen();
 			$('form').submit(function(e){
 				e.preventDefault();
 				var $form = $( this ),
@@ -287,7 +344,20 @@
 				$("#lname-container").slideToggle();
 				$("#hide_ident").toggle();
 				$("#show_ident").toggle();
-			});	
+			});
+			$("#double_major_toggle").click(function() {
+				event.preventDefault();
+				var text = $("#double_major_toggle").text();
+				if(text.indexOf("Enter") >= 0) {
+					text = "Remove Double Major";
+				}
+				else {
+					text = "Enter Double Major";
+				}
+				$("#double_major_toggle").text(text);
+				$("#double_major_container").slideToggle();
+				$("#second_major").chosen();
+			});
 		});
 	</script>
 </body>

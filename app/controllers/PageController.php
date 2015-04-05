@@ -31,6 +31,7 @@ class PageController extends BaseController {
 							'lockerNumber' => Input::get('lockerNumber'),
 							'schoolName' => Input::get('schoolName'),
 							'major' => Input::get('major'),
+							'second_major' => Input::get('second_major'),
 						),
 						array(
 							'firstName' => 'required|alpha',
@@ -52,6 +53,7 @@ class PageController extends BaseController {
 							'countryName' => Input::get('countryName'),
 							'schoolName' => Input::get('schoolName'),
 							'major' => Input::get('major'),
+							'second_major' => Input::get('second_major'),
 						),
 						array(
 							'firstName' => 'required|alpha',
@@ -74,6 +76,7 @@ class PageController extends BaseController {
 							'countryName' => Input::get('countryName'),
 							'schoolName' => Input::get('schoolName'),
 							'major' => Input::get('major'),
+							'second_major' => Input::get('second_major'),
 						),
 						array(
 							'firstName' => 'required|alpha',
@@ -95,6 +98,7 @@ class PageController extends BaseController {
 							'lockerNumber' => Input::get('lockerNumber'),
 							'schoolName' => Input::get('schoolName'),
 							'major' => Input::get('major'),
+							'second_major' => Input::get('second_major'),
 						),
 						array(
 							'email' => 'required|email',
@@ -112,6 +116,7 @@ class PageController extends BaseController {
 							'countryName' => Input::get('countryName'),
 							'schoolName' => Input::get('schoolName'),
 							'major' => Input::get('major'),
+							'second_major' => Input::get('second_major'),
 						),
 						array(
 							'email' => 'required|email',
@@ -130,6 +135,7 @@ class PageController extends BaseController {
 							'countryName' => Input::get('countryName'),
 							'schoolName' => Input::get('schoolName'),
 							'major' => Input::get('major'),
+							'second_major' => Input::get('second_major'),
 						),
 						array(
 							'email' => 'required|email',
@@ -185,7 +191,12 @@ class PageController extends BaseController {
 					$user->lastname = Input::get('lastName');
 					$user->locker = Input::get('lockerNumber');
 					$user->school = Input::get('schoolName');
-					$user->major = Input::get('major');
+					if(Input::get('second_major') != "") {
+						$user->major = Input::get('major') . "#" . Input::get('second_major');
+					}
+					else {
+						$user->major = Input::get('major');
+					}
 					$user->studyabroad = 0;
 					if(Input::get('gapyear') == 1) {
 						$user->country = Input::get('countryName');
@@ -268,7 +279,7 @@ class PageController extends BaseController {
 	}
 	public function stats() {
 		$query = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'firstname', 'lastname', 'major', 'milesfromhome', 'state', 'country', 'studyabroad'))->toArray();
-		
+		$counter = 0;
 		$list = array();
 		$list['states'] = array();
 		$list['colleges'] = array();
@@ -290,7 +301,16 @@ class PageController extends BaseController {
 				$list['colleges'][] = $row['school'];
 			}
 			if($row['major'] != "") {
-				$list['major'][] = $row['major'];		
+				if(strpos($row['major'], '#') !== false) {
+					$double_majors = explode("#", $row['major']);
+					$list['major'][] = $double_majors[0];
+					$list['major'][] = $double_majors[1];
+					$row['major'] = $double_majors[0];
+					$query[$counter]['major'] = $double_majors[0] . " &amp; " . $double_majors[1];
+				}
+				else {
+					$list['major'][] = $row['major'];
+				}
 			}
 			elseif($row['major'] == "") {
 				$list['major'][] = "Gap Year";
@@ -315,6 +335,7 @@ class PageController extends BaseController {
 			if(strpos($row['major'], "Education") !== false || strpos($row['major'], "Medicine") !== false || strpos($row['major'], "Health") !== false) {
 				$list['edumed'][] = $row['major'];
 			}
+			$counter++;
 		}
 		$counts = array();
 		$counts['states'] = array_count_values($list['states']);
