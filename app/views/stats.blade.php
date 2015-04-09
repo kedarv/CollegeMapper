@@ -26,7 +26,7 @@
 <div class="jumbotron">
 <h1 style="text-align:center;margin-top:0px;">Uni High Class of 2015</h1>
 <h4 style="text-align:center;margin-top:0px;"><a href="{{action('PageController@showAdvice')}}">Advice from the Class of 2014 &raquo;</a></h4>
-
+Displaying {{count($query)}} rows
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped tablesorter" id="table">
 		<thead>
@@ -402,8 +402,7 @@ $(document).ready(function(){
 				{
 					id: 'other',
 					data: [
-						@foreach ($counts['other'] as $key => $value) {
-							$key = ucfirst($key);
+						@foreach ($counts['other'] as $key => $value)
 							['{{ucfirst($key)}}', {{$value}}], 
 						@endforeach
 					],
