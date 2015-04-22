@@ -45,7 +45,7 @@ Displaying {{count($query)}} rows
 					<td>Gap year ({{$row['country']}})</td>
 					<td>-</td>
 				@elseif($row['country'] != "" && $row['studyabroad'] == 0 && $row['school'] != "")
-					<td>Gap year ({{$row['country']}}) then {{$row['school']}}</td>
+					<td>Gap year ({{$row['country']}}) then <a href="http://en.wikipedia.org/wiki/{{str_replace(" ", "_", $row['school'])}}">{{$row['school']}}</a></td>
 					<td>{{$row['major']}}</td>
 				@elseif($row['country'] != "" && $row['studyabroad'] == 1)
 					<td>Studying abroad ({{$row['country']}}) at {{$row['school']}}</td>
