@@ -123,6 +123,8 @@
 												<option value="Psychology">Psychology</option>
 												<option value="Sociology">Sociology</option>
 												<option value="Political Science">Political Science</option>
+												<option value="International Studies">International Studies</option>
+												<option value="Philosophy">Philosophy</option>
 												<option value="Architecture">Architecture</option>
 												<option value="Agriculture and Consumer Economics">Agriculture and Consumer Economics</option>
 												<option value="English">English</option>
