@@ -288,6 +288,10 @@ class PageController extends BaseController {
 	}
 	public function stats() {
 		$query = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'firstname', 'lastname', 'major', 'milesfromhome', 'state', 'country', 'studyabroad'))->toArray();
+		if(count($query) == 0) {
+			echo "No entries yet!";
+			exit();
+		}
 		$counter = 0;
 		$list = array();
 		$list['states'] = array();
