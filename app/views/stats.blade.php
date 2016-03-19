@@ -24,8 +24,7 @@
 <div class="row">
 <div class="col-md-12">
 <div class="jumbotron">
-<h1 style="text-align:center;margin-top:0px;">Uni High Class of 2015</h1>
-<h4 style="text-align:center;margin-top:0px;"><a href="{{action('PageController@showAdvice')}}">Advice from the Class of 2014 &raquo;</a></h4>
+<h1 style="text-align:center;margin-top:0px;">Uni High Class of {{Config::get('app.year')}}</h1>
 Displaying {{count($query)}} rows
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped tablesorter" id="table">
@@ -82,8 +81,7 @@ Displaying {{count($query)}} rows
 </div>
 <div class="col-md-6">
 	<span class="pull-right">
-		<a href="{{action('PageController@showHome')}}" class="visible_link">Map  |</a>
-		<a href="{{action('PageController@showAdvice')}}" class="visible_link">  Advice from '14</a>
+		<a href="{{action('PageController@showHome')}}" class="visible_link">Map</a>
 	</span>
 </div>
 </div>

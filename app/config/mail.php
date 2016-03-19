@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'smtp',
+	'driver' => 'mailgun',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mandrillapp.com',
+	'host' => 'smtp.mailgun.org',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'no-reply@kedarv.org.uk', 'name' => 'Kedar V'),
+	'from' => array('address' => 'hello@kedarv.com', 'name' => 'CollegeMapper'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'kedar54@gmail.com',
+	'username' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => 'vmn9F5xqlOvYCYD5H4MK3g',
+	'password' => '',
 
 	/*
 	|--------------------------------------------------------------------------

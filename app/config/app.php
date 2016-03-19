@@ -1,6 +1,8 @@
 <?php
 
 return array(
+	/* Application specific configuration */
+	'year' => 2016,
 
 	/*
 	|--------------------------------------------------------------------------

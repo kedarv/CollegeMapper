@@ -47,7 +47,8 @@
 			</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade in active" id="welcome">
-				<h1 style="margin:5px;">Uni High Class of 2015 Map</h1>
+				<br/>
+				<h1 style="margin:5px;">Uni High Class of {{Config::get('app.year')}} Map</h1>
 				To view entries, press the red marker. You can view information about the college by pressing the "View University Info" link.<br/>
 				<br/>
 				<small>App by <a href="http://github.com/kedarv">@kedarv.</a> Use of any content without permission is forbidden.</small>
