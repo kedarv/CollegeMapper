@@ -1,5 +1,5 @@
 <?php
-
+use Goutte\Client;
 class PageController extends BaseController {
 	public function showHome() {
 		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image', 'country', 'prefix', 'studyabroad'))->toArray();
@@ -263,7 +263,13 @@ class PageController extends BaseController {
 				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
 			}
 			$user->description = $this->getWikiDescription($wikiString);
-			$user->image = $this->getWikiImage($wikiString);
+
+			$img = $this->getWikiImageByScraping($wikiString);
+			if(empty($img)) {
+				$img = $this->getWikiImageByAPI($wikiString);
+			}
+			$user->image = $img;
+
 			$user->milesfromhome = $this->getDistance($geocodeArray['lat'], $geocodeArray['lng'], 40.101952, -88.227161) * .62137;
 			if(isset($geocodeArray['propername'])) {
 				$arr = explode(' ',trim($geocodeArray['propername']));
@@ -411,12 +417,25 @@ class PageController extends BaseController {
 		}
 		return $description;
 	}
+
+	public function getWikiImageByScraping($college) {
+		$url = "https://en.wikipedia.org/wiki/".$college."";
+		$client = new Client();
+		$client->getClient()->setDefaultOption('verify', false);
+		// Request login page
+		$crawler = $client->request('GET', $url);
+		// $crawler = $crawler->filterXPath('//*[@id="mw-content-text"]/table[1]');
+		$crawler = $crawler->filter('.infobox');
+
+		return $crawler->filter('img')->first()->attr('src');
+	}
+
 	/**
 	* Fetches the first image of a Wikipedia page
 	* @param String $college Name of the college, must be properly formatted
 	* @return Link to image 
 	*/
-	public function getWikiImage($college) {
+	public function getWikiImageByAPI($college) {
 		$url = "http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects";
 		$client = new \GuzzleHttp\Client();
 		$response = $client->get($url);
