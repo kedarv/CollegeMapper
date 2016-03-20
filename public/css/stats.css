@@ -1,3 +1,20 @@
+body {
+	background: #000 url('../img/sunset.png');
+	background-repeat: repeat-x;
+	margin-top: 50px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:400 !important;
+}
+.jumbotron {
+	padding: 15px;
+	background: #F5F5F5;
+}
+.heading-text {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	text-align:center;
+	margin-top:0px;
+}
 .visible_link {
 	color: #fff;
 }
@@ -16,10 +33,9 @@
 .tablesorter-bootstrap thead td,
 .tablesorter-bootstrap tfoot th,
 .tablesorter-bootstrap tfoot td {
-	font: bold 14px/20px Arial, Sans-serif;
 	padding: 4px;
 	margin: 0 0 18px;
-	background-color: #eee;
+	background-color: #FBFBFB;
 }
 
 .tablesorter-bootstrap .tablesorter-header {

@@ -7,24 +7,14 @@
 	<title>CollegeMapper  |  Stats</title>
 	{{ HTML::style('css/bootstrap.min.css')}}
 	{{HTML::style('css/stats.css')}}
-	<style>
-	body {
-		background: url({{asset('img/footer_lodyas.png')}});
-		margin-top: 50px;
-	}
-	.jumbotron {
-		padding: 15px;
-		background: #F5F5F5;
-		font-weight:200;
-	}
-	</style>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div class="container">
 <div class="row">
 <div class="col-md-12">
 <div class="jumbotron">
-<h1 style="text-align:center;margin-top:0px;">Uni High Class of {{Config::get('app.year')}}</h1>
+<h1 class="heading-text">Uni High Class of <span style="font-weight:400;">{{Config::get('app.year')}}</span></h1>
 Displaying {{count($query)}} rows
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped tablesorter" id="table">

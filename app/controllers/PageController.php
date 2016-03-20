@@ -249,13 +249,23 @@ class PageController extends BaseController {
 			if($user->country == "") {
 				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
 				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
-				$user->state = $lookupAddress['state'];
+				if(array_key_exists('state', $lookupAddress)) {
+					$user->state = $lookupAddress['state'];
+				}
+				else {
+					$user->state = "";
+				}
 				$user->school = $geocodeArray['propername'];
 			}
 			elseif($user->country != "" && $user->school != "") {
 				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
 				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
-				$user->state = $lookupAddress['state'];
+				if(array_key_exists('state', $lookupAddress)) {
+					$user->state = $lookupAddress['state'];
+				}
+				else {
+					$user->state = "";
+				}
 				$user->school = $geocodeArray['propername'];
 			}
 			else {
