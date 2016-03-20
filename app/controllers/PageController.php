@@ -8,9 +8,6 @@ class PageController extends BaseController {
 	public function makeMark() {
 		return View::make('makemark');
 	}
-	public function showAdvice() {
-		return View::make('advice');
-	}
 	public function postMark() {
 		if (Request::ajax()) {
 			/**
@@ -235,7 +232,12 @@ class PageController extends BaseController {
 				$string = str_replace(" ", "+", $user->country);
 			}
 			$add = (mt_rand(0, 10))/600;
-			$geocodeArray = $this->lookup($string);
+			$geocodeArray = $this->lookupViaText($string);
+			if(count($geocodeArray) == 0) { // If lookup fails
+				$response = array('status' => 'error', 'text' => 'bad request');
+				return Response::json($response); 
+				exit();
+			}
 			$user->lat = $geocodeArray['lat'] + $add;
 			$user->lng = $geocodeArray['lng'] + $add;
 			if($user->country == "") {
@@ -421,13 +423,33 @@ class PageController extends BaseController {
 		$imglink = $imgarray[$imgpageid]['thumbnail']['source'];
 		return $imglink;
 	}
+
 	/**
-	* Fetches the first image of a Wikipedia page
+	* Fetches the latitude and longitude of a college given text
 	* @param String $string Name of the college, must be properly formatted
 	* @return Array containing lat, lng, state, country, propername 
 	*/
-	public function lookup($string){
-		$url = "http://maps.googleapis.com/maps/api/geocode/json?address=".$string."&sensor=false";
+	public function lookupViaText($string){
+		$url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=".$string."&key=AIzaSyBDfQ68a8TPCGeePmMJERWSRzP74UdisP4";
+		$client = new \GuzzleHttp\Client();
+		$response = $client->get($url);
+		$location_array = array();
+		$json = $response->json();
+		if($json['status'] == "OK") {
+			$location_array['lat'] = $json['results'][0]['geometry']['location']['lat'];
+			$location_array['lng'] = $json['results'][0]['geometry']['location']['lng'];
+			$location_array['propername'] = $json['results'][0]['name'];
+		}
+		return $location_array;
+	}
+
+	/**
+	* Fetches the latitude and longitude of a college given address
+	* @param String $string Name of the college, must be properly formatted
+	* @return Array containing lat, lng, state, country, propername 
+	*/
+	public function lookupViaAddress($string){
+		$url = "https://maps.googleapis.com/maps/api/geocode/json?address=".$string."&sensor=false";
 		$ch = curl_init($url);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
@@ -453,6 +475,7 @@ class PageController extends BaseController {
 			}
 			break;
 		}
+		$location_array["status"] = 1;
 		$location_array["lat"] = $latitude;
 		$location_array["lng"] = $longitude;
 		$location_array["country"] = $country;

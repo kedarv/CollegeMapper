@@ -212,8 +212,9 @@
 						<hr/>
 					</div>
 					<div id="loader" style="display:none;">
-						<h1>Working...</h1>
+						<h1 id="loader_title">Working...</h1>
 						<hr/>
+						<span id="loader_text" style="display:none;">Uh oh. Looks like something went wrong! Please contact Kedar!</span>
 						<div class="spinner"></div>
 					</div>
 					{{ Form::submit('Submit', array('class' => 'btn btn-primary btn-lg', 'id' => 'submitbtn')) }}
@@ -262,10 +263,10 @@
 							$('.green').addClass('sd0');
 							$('.red').addClass('sd05');
 							$('.blue').addClass('sd1');
-							$('.yellow').addClass('sd15');     			
+							$('.yellow').addClass('sd15');
 							$("#loader").slideToggle();
 							$("#form_content").slideUp();
-							$("#submitbtn").slideToggle();							
+							$("#submitbtn").slideToggle();
 							$.ajax({
 					            method: 'post',				            
 					            data: {id : response['text']},
@@ -273,6 +274,16 @@
 					            success: function (response) {
 					            	if(response['status'] == 'success') {
 					            		window.location.href = "{{action('PageController@showHome')}}";
+					            	}
+					            	else if(response['status'] == 'error') {
+					            		$('.green').removeClass('sd0');
+										$('.red').removeClass('sd05');
+										$('.blue').removeClass('sd1');
+										$('.yellow').removeClass('sd15');
+										$('.spinner').remove();
+										$('#loader_title').text("Error.");
+										$('#loader_text').fadeIn();
+					            		console.log("seen error.");
 					            	}
 					            }
 					        }); 
