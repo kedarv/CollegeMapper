@@ -234,7 +234,13 @@ class PageController extends BaseController {
 			$add = (mt_rand(0, 10))/600;
 			$geocodeArray = $this->lookupViaText($string);
 			if(count($geocodeArray) == 0) { // If lookup fails
-				$response = array('status' => 'error', 'text' => 'bad request');
+				$response = array('status' => 'error', 'text' => 'Unable to lookup via text');
+				return Response::json($response); 
+				exit();
+			}
+			$lookupAddress = $this->lookupViaAddress($geocodeArray['formatted_address']);
+			if(count($lookupAddress) == 0) { // If lookup fails
+				$response = array('status' => 'error', 'text' => 'Unable to look up via address');
 				return Response::json($response); 
 				exit();
 			}
@@ -243,13 +249,13 @@ class PageController extends BaseController {
 			if($user->country == "") {
 				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
 				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
-				$user->state = $geocodeArray['state'];
+				$user->state = $lookupAddress['state'];
 				$user->school = $geocodeArray['propername'];
 			}
 			elseif($user->country != "" && $user->school != "") {
 				$wikiString = str_replace(" ", "_", $geocodeArray['propername']);
 				$wikiString = str_replace("-", "%E2%80%93", $wikiString);
-				$user->state = $geocodeArray['state'];
+				$user->state = $lookupAddress['state'];
 				$user->school = $geocodeArray['propername'];
 			}
 			else {
@@ -389,13 +395,11 @@ class PageController extends BaseController {
 	*/
 	public function getWikiDescription($college) {
 		$url = "http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=".$college."&continue";
-		$ch = curl_init($url);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
-		$c = curl_exec($ch);
-		curl_close($ch);
-		//var_dump($url);
-		$json = json_decode($c,true);
+		$client = new \GuzzleHttp\Client();
+		$response = $client->get($url);
+		$location_array = array();
+		$json = $response->json();
+
 		$pagearray = $json['query']['pages'];
 		$pageid = key($pagearray);
 		$description = substr(trim(preg_replace('/\s+/', ' ', htmlspecialchars($pagearray[$pageid]['extract'], ENT_QUOTES))), 0, 900);
@@ -411,13 +415,11 @@ class PageController extends BaseController {
 	*/
 	public function getWikiImage($college) {
 		$url = "http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects";
-		$ch = curl_init($url);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
-		$c = curl_exec($ch);
+		$client = new \GuzzleHttp\Client();
+		$response = $client->get($url);
+		$location_array = array();
+		$json = $response->json();
 
-		$json = json_decode($c,true);
-		curl_close($ch);
 		$imgarray = $json['query']['pages'];
 		$imgpageid = key($imgarray);
 		$imglink = $imgarray[$imgpageid]['thumbnail']['source'];
@@ -439,6 +441,7 @@ class PageController extends BaseController {
 			$location_array['lat'] = $json['results'][0]['geometry']['location']['lat'];
 			$location_array['lng'] = $json['results'][0]['geometry']['location']['lng'];
 			$location_array['propername'] = $json['results'][0]['name'];
+			$location_array['formatted_address'] = $json['results'][0]['formatted_address'];
 		}
 		return $location_array;
 	}
@@ -450,16 +453,15 @@ class PageController extends BaseController {
 	*/
 	public function lookupViaAddress($string){
 		$url = "https://maps.googleapis.com/maps/api/geocode/json?address=".$string."&sensor=false";
-		$ch = curl_init($url);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_USERAGENT, "http://kedarv.org.uk");
-		$c = curl_exec($ch);
-		$response = json_decode($c,true);
-		curl_close($ch);
-		$latitude = $response['results'][0]['geometry']['location']['lat'];
-		$longitude = $response['results'][0]['geometry']['location']['lng'];
+		$client = new \GuzzleHttp\Client();
+		$response = $client->get($url);
 		$location_array = array();
-		foreach ($response["results"] as $result) {
+		$json = $response->json();
+
+		$latitude = $json['results'][0]['geometry']['location']['lat'];
+		$longitude = $json['results'][0]['geometry']['location']['lng'];
+		$location_array = array();
+		foreach ($json["results"] as $result) {
 			foreach ($result["address_components"] as $address) {
 				if (in_array("administrative_area_level_1", $address["types"])) {
 					$state = $address["long_name"];
