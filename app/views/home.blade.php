@@ -56,7 +56,7 @@
 			<div class="tab-pane fade" id="faq">
 				<br/>
 				<b>Q.</b> Who wrote this app?<br/>
-				<b>A.</b> <a href="http://kedarv.org.uk">Kedar,</a> a Uni High Class of 2014 grad, currently attending Purdue University.
+				<b>A.</b> <a href="http://kedarv.com">Kedar,</a> a Uni High Class of 2014 grad, currently attending Purdue University.
 				<hr/>
 				<b>Q.</b> How is this data collected?<br/>
 				<b>A.</b> Students willingly provide this information, and all data collected is stored permanently.

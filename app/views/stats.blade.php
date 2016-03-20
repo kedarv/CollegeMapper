@@ -150,7 +150,7 @@ $(document).ready(function(){
 				}],
 				credits: {
 					text: 'Kedar Vaidya',
-					href: 'http://www.kedarv.org.uk'
+					href: 'http://www.kedarv.com'
 				}
 			});
 		});
@@ -215,7 +215,7 @@ $(document).ready(function(){
             }],
 			credits: {
 				text: 'Kedar Vaidya',
-				href: 'http://www.kedarv.org.uk'
+				href: 'http://www.kedarv.com'
 			}
         });
     });
@@ -255,7 +255,7 @@ $(document).ready(function(){
 			}],
 			credits: {
 				text: 'Kedar Vaidya',
-				href: 'http://www.kedarv.org.uk'
+				href: 'http://www.kedarv.com'
 			}
 			});
 		});
@@ -414,7 +414,7 @@ $(document).ready(function(){
 			},
 			credits: {
 				text: 'Kedar Vaidya',
-				href: 'http://www.kedarv.org.uk'
+				href: 'http://www.kedarv.com'
 			}
 		})
 	});
