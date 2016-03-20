@@ -402,9 +402,12 @@ class PageController extends BaseController {
 
 		$pagearray = $json['query']['pages'];
 		$pageid = key($pagearray);
-		$description = substr(trim(preg_replace('/\s+/', ' ', htmlspecialchars($pagearray[$pageid]['extract'], ENT_QUOTES))), 0, 900);
-		if(strlen($description) == 900) {
-			$description = $description . "...";
+		$description = "";
+		if (array_key_exists('extract', $pagearray[$pageid])) {
+			$description = substr(trim(preg_replace('/\s+/', ' ', htmlspecialchars($pagearray[$pageid]['extract'], ENT_QUOTES))), 0, 900);
+			if(strlen($description) == 900) {
+				$description = $description . "...";
+			}
 		}
 		return $description;
 	}
@@ -422,7 +425,10 @@ class PageController extends BaseController {
 
 		$imgarray = $json['query']['pages'];
 		$imgpageid = key($imgarray);
-		$imglink = $imgarray[$imgpageid]['thumbnail']['source'];
+		$imglink = "";
+		if (array_key_exists('thumbnail', $imgarray[$imgpageid])) {
+			$imglink = $imgarray[$imgpageid]['thumbnail']['source'];
+		}
 		return $imglink;
 	}
 
