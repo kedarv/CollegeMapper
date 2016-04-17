@@ -132,6 +132,7 @@
 												<option value="Music">Music</option>
 												<option value="Music Cognition">Music Cognition</option>
 												<option value="Theatre">Theatre</option>
+												<option value="Zoology">Zoology</option>
 											</optgroup>
 											<optgroup label="Business">
 												<option value="Business">Business</option>
@@ -189,6 +190,7 @@
 												<option value="Music">Music</option>
 												<option value="Music Cognition">Music Cognition</option>
 												<option value="Theatre">Theatre</option>
+												<option value="Zoology">Zoology</option>
 											</optgroup>
 											<optgroup label="Business">
 												<option value="Business">Business</option>
