@@ -374,17 +374,29 @@ class PageController extends BaseController {
 			}
 			$counter++;
 		}
+
 		$counts = array();
 		$counts['states'] = array_count_values($list['states']);
 		$counts['colleges'] = array_count_values($list['colleges']);
 		$counts['majors'] = array_count_values($list['major']);
-		
+
+		uasort($counts['states'], array($this, "sortByOrder"));
+		uasort($counts['colleges'], array($this, "sortByOrder"));
+		uasort($counts['majors'], array($this, "sortByOrder"));
+
 		# Drilldown
 		$counts['engineering'] = array_count_values($list['engineering']);
 		$counts['other'] = array_count_values($list['other']);
 		$counts['artscience'] = array_count_values($list['artscience']);
 		$counts['businesslaw'] = array_count_values($list['businesslaw']);
 		$counts['edumed'] = array_count_values($list['edumed']);
+
+		uasort($counts['engineering'], array($this, "sortByOrder"));
+		uasort($counts['other'], array($this, "sortByOrder"));
+		uasort($counts['artscience'], array($this, "sortByOrder"));
+		uasort($counts['businesslaw'], array($this, "sortByOrder"));
+		uasort($counts['edumed'], array($this, "sortByOrder"));
+
 		return View::make('stats', compact('query', 'list', 'counts'));
 	}
 	/**
@@ -518,5 +530,8 @@ class PageController extends BaseController {
 		$location_array["country"] = $country;
 
 		return $location_array;
+	}
+	public function sortByOrder($a, $b) {
+    	return $b- $a;
 	}
 }
