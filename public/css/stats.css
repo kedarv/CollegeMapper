@@ -1,12 +1,12 @@
 body {
-	background: #000 url('../img/sunset.png');
-	background-repeat: repeat-x;
 	margin-top: 50px;
 	font-family: 'Open Sans', sans-serif;
 	font-weight:400 !important;
 }
 .jumbotron {
-	padding: 15px;
+    padding: 15px;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
 	background: #F5F5F5;
 }
 .heading-text {
