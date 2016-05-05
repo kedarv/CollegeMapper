@@ -98,6 +98,7 @@
 									{{Form::label('major', 'Major')}} &nbsp;<a href="#" id="double_major_toggle">Enter Double Major &raquo;</a>
 									<select class="form-control" id="major" name="major">
 										@foreach($data as $category)
+											<option disabled selected>Select Major</option>
 											<optgroup label="{{$category['name']}}">
 												@foreach($category['majors'] as $major)
 													<option value="{{$major['name']}}">{{$major['name']}}</option>
@@ -112,6 +113,7 @@
 									{{Form::label('second_major', 'Second Major')}}
 									<select class="form-control" id="second_major" name="second_major">
 										@foreach($data as $category)
+											<option disabled selected>Select Second Major</option>
 											<optgroup label="{{$category['name']}}">
 												@foreach($category['majors'] as $major)
 													<option value="{{$major['name']}}">{{$major['name']}}</option>
