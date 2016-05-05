@@ -6,7 +6,8 @@ class PageController extends BaseController {
 		return View::make('home', compact('data'));
 	}
 	public function makeMark() {
-		return View::make('makemark');
+		$data = Category::with('majors')->get();
+		return View::make('makemark', compact('data'));
 	}
 	public function postMark() {
 		if (Request::ajax()) {
