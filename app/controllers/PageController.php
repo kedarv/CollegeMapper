@@ -297,9 +297,9 @@ class PageController extends BaseController {
 					"firstname" => $user->firstname,
 					"lastname" => $user->lastname,
 				);
-				Mail::send('email.welcome', compact('data'), function($message) use ($user) {
-					$message->to($user->email, $user->firstname . ' ' . $user->lastname)->subject('Welcome to CollegeMapper');
-				});
+				// Mail::send('email.welcome', compact('data'), function($message) use ($user) {
+				// 	$message->to($user->email, $user->firstname . ' ' . $user->lastname)->subject('Welcome to CollegeMapper');
+				// });
 				$user->firstrun = 1;
 			}
 			$user->save();
@@ -314,8 +314,7 @@ class PageController extends BaseController {
 	public function stats() {
 		$query = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'firstname', 'lastname', 'major', 'milesfromhome', 'state', 'country', 'studyabroad'))->toArray();
 		if(count($query) == 0) {
-			echo "No entries yet!";
-			exit();
+			return "No entries yet.";
 		}
 		$counter = 0;
 		$list = array();
@@ -330,15 +329,15 @@ class PageController extends BaseController {
 		$list['businesslaw'] = array();
 		$list['edumed'] = array();
 		
-		# Use a while loop to create arrays with all the info
+		# Iterate through all the users
 		foreach($query as $row) {
-			if($row['state'] != ""){
+			if(!empty($row['state'])) {
 				$list['states'][] = $row['state'];
 			}
-			if($row['school'] != "") {
+			if(!empty($row['school'])) {
 				$list['colleges'][] = $row['school'];
 			}
-			if($row['major'] != "") {
+			if(!empty($row['major'])) {
 				if(strpos($row['major'], '#') !== false) {
 					$double_majors = explode("#", $row['major']);
 					$list['major'][] = $double_majors[0];
@@ -353,27 +352,28 @@ class PageController extends BaseController {
 			elseif($row['major'] == "") {
 				$list['major'][] = "Gap Year";
 			}
-
-			if(strpos($row['major'], "Engineering") !== false || strpos($row['major'], "Computer Science") !== false) {
-				$list['engineering'][] = $row['major'];
-			}
-			if(strpos($row['major'], "Undecided") !== false || strpos($row['major'], "General") !== false || strpos($row['major'], "Study Abroad") !== false || strpos($row['major'], "Gap Year") !== false) {
-				if(strpos($row['major'], "Engineering") === false) {
-					$list['other'][] = $row['major'];
-				}
-			}
-			if(strpos($row['major'], "International Studies") !== false || strpos($row['major'], "Philosophy") !== false || strpos($row['major'], "Child Psychology") !== false || strpos($row['major'], "Linguistics") !== false || strpos($row['major'], "Sociology") !== false || strpos($row['major'], "Kinesiology") !== false || strpos($row['major'], "Art") !== false || strpos($row['major'], "Music Cognition") !== false || strpos($row['major'], "Media") !== false || strpos($row['major'], "Architecture") !== false || strpos($row['major'], "Psychology") !== false || strpos($row['major'], "Agriculture and Consumer Economics") !== false || strpos($row['major'], "Biology") !== false || strpos($row['major'], "Political Science") !== false || strpos($row['major'], "Theatre") !== false || strpos($row['major'], "History") !== false || strpos($row['major'], "English") !== false || strpos($row['major'], "Biochemistry") !== false || strpos($row['major'], "Zoology") !== false) {
-				$list['artscience'][] = $row['major'];
-			}
-			if(strpos($row['major'], "Business") !== false || strpos($row['major'], "Law") !== false || strpos($row['major'], "Economics") !== false) {
-				if(strpos($row['major'], "Consumer") === false) {
-					$list['businesslaw'][] = $row['major'];
-				}
-			}
-			if(strpos($row['major'], "Education") !== false || strpos($row['major'], "Medicine") !== false || strpos($row['major'], "Health") !== false) {
-				$list['edumed'][] = $row['major'];
-			}
 			$counter++;
+		}
+		$engineering = Major::where('category', '=', 1)->get(array('name'));
+		$artscience = Major::where('category', '=', 2)->get(array('name'));
+		$business = Major::where('category', '=', 3)->get(array('name'));
+		$edumed = Major::where('category', '=', 4)->get(array('name'));
+		$nocategory = Major::where('category', '=', 5)->get(array('name'));
+
+		foreach($engineering as $item) {
+			$list['engineering'][] = $item->name;
+		}
+		foreach($artscience as $item) {
+			$list['artscience'][] = $item->name;
+		}
+		foreach($business as $item) {
+			$list['businesslaw'][] = $item->name;
+		}
+		foreach($edumed as $item) {
+			$list['edumed'][] = $item->name;
+		}
+		foreach($nocategory as $item) {
+			$list['other'][] = $item->name;
 		}
 
 		$counts = array();
@@ -533,6 +533,6 @@ class PageController extends BaseController {
 		return $location_array;
 	}
 	public function sortByOrder($a, $b) {
-    	return $b- $a;
+    	return $b - $a;
 	}
 }

@@ -41,13 +41,13 @@ class MajorTableSeeder extends Seeder {
 			['id' => 34, 'name' => 'International Business', 'category' => 3],
 			['id' => 35, 'name' => 'Economics', 'category' => 3],
 			['id' => 36, 'name' => 'Education', 'category' => 4],
-			['id' => 37, 'name' => 'Law', 'category' => 4],
-			['id' => 38, 'name' => 'Media', 'category' => 4],
+			['id' => 37, 'name' => 'Law', 'category' => 5],
+			['id' => 38, 'name' => 'Media', 'category' => 5],
 			['id' => 39, 'name' => 'Medicine', 'category' => 4],
 			['id' => 40, 'name' => 'Public Health', 'category' => 4],
-			['id' => 41, 'name' => 'General/Other', 'category' => 4],
-			['id' => 42, 'name' => 'Gap Year', 'category' => 4],
-			['id' => 43, 'name' => 'Undecided', 'category' => 4],
+			['id' => 41, 'name' => 'General/Other', 'category' => 5],
+			['id' => 42, 'name' => 'Gap Year', 'category' => 5],
+			['id' => 43, 'name' => 'Undecided', 'category' => 5],
         );
         DB::table('majors')->insert($data);
 	}

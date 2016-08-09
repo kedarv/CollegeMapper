@@ -8,7 +8,8 @@ class CategoryTableSeeder extends Seeder {
    			['id' => 1, 'name' => 'Engineering'],
    			['id' => 2, 'name' => 'Arts and Sciences'],
    			['id' => 3, 'name' => 'Business'],
-   			['id' => 4, 'name' => 'No Category'],
+   			['id' => 4, 'name' => 'Education and Medicine'],
+   			['id' => 5, 'name' => 'No Category'],
         );
         DB::table('category')->insert($data);
 	}
