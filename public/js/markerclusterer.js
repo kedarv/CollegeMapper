@@ -87,12 +87,12 @@ function MarkerClusterer(map, opt_markers, opt_options) {
   // Add the map event listeners
   var that = this;
   google.maps.event.addListener(this.map_, 'zoom_changed', function() {
-  	var maxZoom = that.map_.mapTypes[that.map_.getMapTypeId()].maxZoom;
-  	var zoom = that.map_.getZoom();
-  	if (zoom < 0 || zoom > maxZoom) {
-  	  return;
-  	}
-  	
+    var maxZoom = that.map_.mapTypes[that.map_.getMapTypeId()].maxZoom;
+    var zoom = that.map_.getZoom();
+    if (zoom < 0 || zoom > maxZoom) {
+      return;
+    }
+    
     if (that.prevZoom_ != zoom) {
       that.prevZoom_ = that.map_.getZoom();
       that.resetViewport();
@@ -117,8 +117,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
  * @private
  */
 MarkerClusterer.prototype.MARKER_CLUSTER_IMAGE_PATH_ =
-    'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/' +
-    'images/m';
+    'https://raw.githubusercontent.com/googlemaps/js-marker-clusterer/gh-pages/images/m';
 
 
 /**
