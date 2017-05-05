@@ -15,7 +15,13 @@
 <div class="col-md-12">
 <div class="jumbotron">
 <h1 class="heading-text">Uni High Class of <span style="font-weight:400;">{{Config::get('app.year')}}</span></h1>
-Displaying {{count($query)}} rows
+Displaying {{count($query)}} rows.
+<ol class="breadcrumb" style="margin-bottom: 10px; background: #fff">
+  <li><a href="http://2014.kedarv.com">Class of 2014</a></li>
+  <li><a href="http://2015.kedarv.com">Class of 2015</a></li>
+  <li><a href="http://2016.kedarv.com">Class of 2016</a></li>
+  <li><a href="http://2017.kedarv.com">Class of 2017</a></li>
+</ol>
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped tablesorter" id="table">
 		<thead>
