@@ -1,8 +1,8 @@
 <?php
-
+error_reporting(E_ALL ^ E_DEPRECATED);
 return array(
 	/* Application specific configuration */
-	'year' => 2016,
+	'year' => 2017,
 
 	/*
 	|--------------------------------------------------------------------------

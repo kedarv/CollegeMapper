@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'hello@kedarv.com', 'name' => 'CollegeMapper'),
+	'from' => array('address' => '', 'name' => ''),
 
 	/*
 	|--------------------------------------------------------------------------

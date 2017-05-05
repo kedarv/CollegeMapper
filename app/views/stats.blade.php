@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>CollegeMapper  |  Stats</title>
+	<title>Uni High Class of {{Config::get('app.year')}} |  Stats</title>
 	{{ HTML::style('css/bootstrap.min.css')}}
 	{{HTML::style('css/stats.css')}}
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
@@ -67,7 +67,7 @@ Displaying {{count($query)}} rows
 </div>
 </div>
 <div class="col-md-6">
-	<a href="http://github.com/kedarv" class="visible_link">@kedarv</a>
+	<a href="http://kedarv.com" class="visible_link">@kedarv</a>
 </div>
 <div class="col-md-6">
 	<span class="pull-right">

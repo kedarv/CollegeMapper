@@ -1,5 +1,7 @@
 <?php
 use Goutte\Client;
+use GuzzleHttp\Client as GuzzleClient;
+
 class PageController extends BaseController {
 	public function showHome() {
 		$data = User::where('lat', '!=', '')->where('lng', '!=', '')->get(array('school', 'lat', 'lng', 'firstname', 'lastname', 'description', 'image', 'country', 'prefix', 'studyabroad'))->toArray();
@@ -297,9 +299,10 @@ class PageController extends BaseController {
 					"firstname" => $user->firstname,
 					"lastname" => $user->lastname,
 				);
-				Mail::send('email.welcome', compact('data'), function($message) use ($user) {
-					$message->to($user->email, $user->firstname . ' ' . $user->lastname)->subject('Welcome to CollegeMapper');
-				});
+
+				// Mail::send('email.welcome', compact('data'), function($message) use ($user) {
+				// 	$message->to($user->email, $user->firstname . ' ' . $user->lastname)->subject('Welcome to CollegeMapper');
+				// });
 				$user->firstrun = 1;
 			}
 			$user->save();
@@ -424,10 +427,10 @@ class PageController extends BaseController {
 	*/
 	public function getWikiDescription($college) {
 		$url = "http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=".$college."&continue";
-		$client = new \GuzzleHttp\Client();
-		$response = $client->get($url);
+		$client = new GuzzleClient();
+		$response = $client->request('GET', $url, ['verify' => false]);
 		$location_array = array();
-		$json = $response->json();
+		$json = json_decode($response->getBody(), true);
 
 		$pagearray = $json['query']['pages'];
 		$pageid = key($pagearray);
@@ -442,14 +445,15 @@ class PageController extends BaseController {
 	}
 
 	public function getWikiImageByScraping($college) {
-		$url = "https://en.wikipedia.org/wiki/".$college."";
+		$url = "http://en.wikipedia.org/wiki/".$college."";
 		$client = new Client();
-		$client->getClient()->setDefaultOption('verify', false);
+		$guzzleClient = new GuzzleClient(array(
+		    'verify' => false,
+		));
+		$client->setClient($guzzleClient);
 		// Request login page
 		$crawler = $client->request('GET', $url);
-		// $crawler = $crawler->filterXPath('//*[@id="mw-content-text"]/table[1]');
 		$crawler = $crawler->filter('.infobox');
-
 		return $crawler->filter('img')->first()->attr('src');
 	}
 
@@ -460,10 +464,10 @@ class PageController extends BaseController {
 	*/
 	public function getWikiImageByAPI($college) {
 		$url = "http://en.wikipedia.org/w/api.php?action=query&titles=".$college."&prop=pageimages&format=json&pithumbsize=200&redirects";
-		$client = new \GuzzleHttp\Client();
-		$response = $client->get($url);
+		$client = new GuzzleClient();
+		$response = $client->request('GET', $url, ['verify' => false]);
 		$location_array = array();
-		$json = $response->json();
+		$json = json_decode($response->getBody(), true);
 
 		$imgarray = $json['query']['pages'];
 		$imgpageid = key($imgarray);
@@ -481,10 +485,10 @@ class PageController extends BaseController {
 	*/
 	public function lookupViaText($string){
 		$url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=".$string."&key=AIzaSyBDfQ68a8TPCGeePmMJERWSRzP74UdisP4";
-		$client = new \GuzzleHttp\Client();
-		$response = $client->get($url);
+		$client = new GuzzleClient();
+		$response = $client->request('GET', $url, ['verify' => false]);
 		$location_array = array();
-		$json = $response->json();
+		$json = json_decode($response->getBody(), true);
 		if($json['status'] == "OK") {
 			$location_array['lat'] = $json['results'][0]['geometry']['location']['lat'];
 			$location_array['lng'] = $json['results'][0]['geometry']['location']['lng'];
@@ -501,10 +505,10 @@ class PageController extends BaseController {
 	*/
 	public function lookupViaAddress($string){
 		$url = "https://maps.googleapis.com/maps/api/geocode/json?address=".$string."&sensor=false";
-		$client = new \GuzzleHttp\Client();
-		$response = $client->get($url);
+		$client = new GuzzleClient();
+		$response = $client->request('GET', $url, ['verify' => false]);
 		$location_array = array();
-		$json = $response->json();
+		$json = json_decode($response->getBody(), true);
 
 		$latitude = $json['results'][0]['geometry']['location']['lat'];
 		$longitude = $json['results'][0]['geometry']['location']['lng'];
