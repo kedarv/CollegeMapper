@@ -49,7 +49,7 @@ Displaying {{count($query)}} rows.
 					<td><a href="http://en.wikipedia.org/wiki/{{str_replace(" ", "_", $row['school'])}}">{{$row['school']}}</a></td>
 					<td>{{$row['major']}}</td>				
 				@endif
-				@if($row['milesfromhome'] < 5)
+				@if($row['school'] == "University of Illinois at Urbana-Champaign")
 				<td><span class="dist hidden">0</span><img src="http://upload.wikimedia.org/wikipedia/en/thumb/3/3a/UIUC_I_mark.svg/18px-UIUC_I_mark.svg.png" class="img-responsive" alt="UofI"></td>
 				@elseif($row['school'] == "Purdue University")
 				<td><span class="dist">{{$row['milesfromhome']}}</span>{{ HTML::image("img/purdue.png", "Purdue", array('class' => 'img-responsive', 'style' => 'float:right')) }}</td>
