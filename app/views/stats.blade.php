@@ -52,7 +52,7 @@ Displaying {{count($query)}} rows.
 				@if($row['school'] == "University of Illinois at Urbana-Champaign")
 				<td><span class="dist hidden">0</span><img src="http://upload.wikimedia.org/wikipedia/en/thumb/3/3a/UIUC_I_mark.svg/18px-UIUC_I_mark.svg.png" class="img-responsive" alt="UofI"></td>
 				@elseif($row['school'] == "Purdue University")
-				<td><span class="dist">{{$row['milesfromhome']}}</span>{{ HTML::image("img/purdue.png", "Purdue", array('class' => 'img-responsive', 'style' => 'float:right')) }}</td>
+				<td><span class="dist">{{$row['milesfromhome']}}</span> Miles {{ HTML::image("img/purdue.png", "Purdue", array('class' => 'img-responsive', 'style' => 'float:right')) }}</td>
 				@else
 				<td><span class="dist">{{$row['milesfromhome']}}</span> Miles</td>
 				@endif
